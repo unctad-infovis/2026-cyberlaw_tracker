@@ -92,7 +92,6 @@ function ChartTable({
           {tableData && tableData.map(el => {
             const rowId = el.country; // stable ID
             const isExpanded = !!expandedRows[rowId];
-
             return (
               <React.Fragment key={rowId}>
                 {/* Main row */}
@@ -109,7 +108,6 @@ function ChartTable({
 
                   </td>
                 </tr>
-
                 {/* Hidden details row */}
                 {(isExpanded || (country && country.label === el.country)) && (
                 <tr className="subrow">

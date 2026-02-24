@@ -51,7 +51,7 @@ function App() {
   };
 
   const checkWidth = useCallback(() => {
-    if (appRef.current.offsetWidth < 600) {
+    if (appRef.current.offsetWidth < 900) {
       setTimeout(() => {
         setTableState('collapsed');
       }, 1500);
@@ -77,7 +77,10 @@ function App() {
         ];
 
         const count = categories.reduce((total, category) => total + (el[category] === 'Legislation' ? 1 : 0), 0);
-
+        el.country = (result[0].objects.economies.geometries.find(geometry => {
+          if (geometry.properties.code === el.code) return true;
+          return false;
+        })).properties.labelen;
         return {
           ...el,
           value: count
@@ -277,7 +280,6 @@ function App() {
             {data !== false && (
               <div className={`table_wrapper ${tableState}`}>
                 <div className="table_controls_container">
-                  {tableState !== 'full' && appRef.current.offsetWidth < 900 && (
                   <button
                     type="button"
                     onClick={() => {
@@ -291,22 +293,7 @@ function App() {
                   >
                     {tableState === 'collapsed' ? '◀◀' : '▶▶'}
                   </button>
-                  )}
-                  {' '}
-                  {appRef.current.offsetWidth > 900 && false && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setTableState(prev => {
-                        if (prev === 'full') return 'expanded';
-                        if (prev === 'expanded') return 'full';
-                        return prev;
-                      });
-                    }}
-                  >
-                    {tableState === 'full' ? '▶▶' : '⛶'}
-                  </button>
-                  )}
+
                 </div>
                 {/* <p>
                   <strong>Mapping the difference</strong>
