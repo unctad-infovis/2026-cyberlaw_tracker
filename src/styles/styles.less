@@ -133,7 +133,7 @@
                   line-height: 16px;
                 }
               }
-              .basic-single {
+              .basic-multi-select {
                 font-size: 15px;
                 min-width: 290px;
                 width: 100%;
@@ -260,6 +260,25 @@
                 margin-bottom: 5px;
                 font-weight: 600;
               }
+              span.icon span {
+                      line-height: 18px;
+                      vertical-align: middle;
+                      display: inline-block;
+                      height: 14px;
+                      width: 14px;
+                      &.no_data {
+                        background-color: #AEA29A;
+                      }
+                      &.no_legislation {
+                        background-color: #ED1847;
+                      }
+                      &.draft_legislation {
+                        background-color: #FBAF17;
+                      }
+                      &.legislation {
+                        background-color: #009EDB;
+                      }
+                    }
             }
           }
         }
@@ -282,6 +301,25 @@
           &.full {
             max-width: calc(100% - 40px);
             width: 100%;
+          }
+          .bar {
+            background-color: #009edb;
+            display: block;
+            height: 20px;
+            .bar_value {
+              color: #fff;
+              display: block;
+              font-size: 13px;
+              line-height: 20px;
+              text-align: right;
+              vertical-align: middle;
+              width: 100%;
+              .bar_number {
+              }
+              .bar_unit {
+                padding-right: 5px;
+              }
+            }
           }
           .table_controls_container {
             button {
@@ -339,7 +377,9 @@
             width: 100%;
             table {
               thead {
+                  width: 100%;
                 tr {
+                  width: 100%;
                   th {
                     border-bottom: 1px solid #000;
                     padding: 2px;
@@ -347,6 +387,7 @@
                 }
               }
               tbody {
+                width: 100%;
                 tr {
                   td {
                     border-bottom: 1px solid #ddd;
@@ -355,25 +396,32 @@
               }
               tr {
                 &.expanded {
-                  td.name {
-                    font-weight: 600;
-                  }
                   td {
                     border-bottom: 0px solid #ddd;
+                    &.name {
+                      font-weight: 600;
+                    }
                   }
                 }
                 td,
                 th {
+                  &.region {
+                    text-align: left;
+                    width: 40%;
+                  }
                   &.name {
                     text-align: left;
                     width: 40%;
+                  }
+                  &.share {
+                    text-align: left;
                   }
                   &.count {
                     width: 30%;
                     text-align: center;
                   }
                   &.info {
-                    font-size: 14px;
+                    text-align: left;
                     width: 30%;
                   }
                   &.value {
@@ -381,6 +429,11 @@
                   }
                 }
                 td {
+                  &.info {
+                    font-size: 12px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                  }
                   padding: 2px;
                   .subrow-content {
                     padding: 5px 0 5px 10px;

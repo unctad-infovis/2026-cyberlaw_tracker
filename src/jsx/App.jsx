@@ -8,7 +8,6 @@ import 'intersection-observer';
 import { useIsVisible } from 'react-is-visible';
 
 import Select from 'react-select';
-import { Tooltip } from 'react-tooltip';
 
 // Load helpers.
 import ChartMap from './components/ChartMap.jsx';
@@ -21,6 +20,7 @@ function App() {
   const isVisibleApp = useIsVisible(appRef);
 
   const [data, setData] = useState(false);
+  const [options, setOptions] = useState(false);
 
   const [type, setType] = useState('Overview');
   const [country, setCountry] = useState(null);
@@ -58,6 +58,90 @@ function App() {
     }
   }, []);
 
+  const calculateLegislationPercentages = (country_data) => {
+    const legislations = [
+      'Consumer Protection',
+      'Cybercrime',
+      'Electronic Transactions',
+      'Indirect Taxation',
+      'Privacy and Data Protection'
+    ];
+
+    const groups = [
+      'Africa',
+      'Asia and Oceania',
+      'Developed countries',
+      'Developing countries',
+      'Landlocked developing countries',
+      'Latin America and Caribbean',
+      'Least developed countries',
+      'Small island developing states'
+    ];
+
+    const statuses = [
+      'Legislation',
+      'Draft Legislation',
+      'No Legislation',
+      'No Data'
+    ];
+
+    const result = {};
+
+    // Initialize structure
+    legislations.forEach((leg) => {
+      result[leg] = {};
+
+      statuses.forEach((status) => {
+        result[leg][status] = { World: 0 };
+
+        groups.forEach((g) => {
+          result[leg][status][g] = 0;
+        });
+      });
+    });
+
+    // Totals per group
+    const totals = {
+      World: country_data.length
+    };
+
+    groups.forEach((g) => {
+      totals[g] = country_data.filter((d) => Number(d[g]) === 1).length;
+    });
+
+    // Count occurrences
+    country_data.forEach((row) => {
+      legislations.forEach((leg) => {
+        const status = row[leg] || 'No Data';
+
+        if (!result[leg][status]) return;
+
+        result[leg][status].World += 1;
+
+        groups.forEach((g) => {
+          if (Number(row[g]) === 1) {
+            result[leg][status][g] += 1;
+          }
+        });
+      });
+    });
+
+    // Convert counts → percentages
+    legislations.forEach((leg) => {
+      statuses.forEach((status) => {
+        result[leg][status].World = (result[leg][status].World / totals.World) * 100;
+
+        groups.forEach((g) => {
+          result[leg][status][g] = totals[g]
+            ? (result[leg][status][g] / totals[g]) * 100
+            : 0;
+        });
+      });
+    });
+
+    return result;
+  };
+
   useEffect(() => {
     if (isVisibleApp === true) {
       checkWidth();
@@ -67,25 +151,58 @@ function App() {
   useEffect(() => {
     fetchExternalData().then((result) => {
       result[1] = CSVtoJSON(result[1]);
+
       result[1] = result[1].map(el => {
         const categories = [
-          'Electronic Transactions',
           'Consumer Protection',
-          'Privacy and Data Protection',
           'Cybercrime',
-          'Indirect Taxation'
+          'Electronic Transactions',
+          'Indirect Taxation',
+          'Privacy and Data Protection'
         ];
 
-        const count = categories.reduce((total, category) => total + (el[category] === 'Legislation' ? 1 : 0), 0);
-        el.country = (result[0].objects.economies.geometries.find(geometry => {
-          if (geometry.properties.code === el.code) return true;
-          return false;
-        })).properties.labelen;
+        const count = categories.reduce(
+          (total, category) => total + (el[category] === 'Legislation' ? 1 : 0),
+          0
+        );
+
+        el.country = (
+          result[0].objects.economies.geometries.find(geometry => geometry.properties.code === el.code)
+        ).properties.labelen;
+
         return {
           ...el,
           value: count
         };
       });
+
+      const groups = [{
+        label: 'Country groups',
+        options: [
+          { value: 'World', label: 'World' },
+          { value: 'Africa', label: 'Africa' },
+          { value: 'Asia and Oceania', label: 'Asia and Oceania' },
+          { value: 'Developed countries', label: 'Developed countries' },
+          { value: 'Developing countries', label: 'Developing countries' },
+          { value: 'Landlocked developing countries', label: 'Landlocked developing countries (LLDCs)' },
+          { value: 'Latin America and Caribbean', label: 'Latin America and Caribbean' },
+          { value: 'Least developed countries', label: 'Least developed countries (LDCs)' },
+          { value: 'Small island developing states', label: 'Small island developing states (SIDS)' }
+        ]
+      }];
+
+      const countries = [{
+        label: 'Countries',
+        options: result[1]
+          .slice()
+          .sort((a, b) => a.country.localeCompare(b.country))
+          .map((el) => ({ value: el.country, label: el.country }))
+      }];
+
+      setOptions([...groups, ...countries]);
+      // NEW: calculate legislation percentages
+      result.legislationStats = calculateLegislationPercentages(result[1]);
+
       return setData(result);
     });
   }, []);
@@ -211,25 +328,27 @@ function App() {
               </div>
               <div className="selection_container">
                 <div className="selector_container">
-                  {data
-                && (
-                <Select
-                  className="basic-single"
-                  classNamePrefix="select"
-                  defaultValue=""
-                  isClearable
-                  isDisabled={false}
-                  isLoading={false}
-                  isRtl={false}
-                  isSearchable
-                  name="country"
-                  onChange={(selectedOption) => changeCountry(selectedOption)}
-                  options={data[1].slice().sort((a, b) => a.country.localeCompare(b.country)).map((el) => ({ value: el.country, label: el.country }))}
-                  placeholder="Select economy "
-                  styles={customStyles}
-                  value={country}
-                />
-                )}
+                  {options
+                  && (
+                  <Select
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    defaultValue=""
+                    isClearable
+                    isDisabled={false}
+                    isLoading={false}
+                    isMulti
+                    isOptionDisabled={(option) => option.isdisabled}
+                    isRtl={false}
+                    isSearchable
+                    name="country"
+                    onChange={(selectedOption) => changeCountry(selectedOption)}
+                    options={options}
+                    placeholder="Select economy "
+                    styles={customStyles}
+                    value={country}
+                  />
+                  )}
                 </div>
               </div>
             </div>
@@ -249,7 +368,7 @@ function App() {
             )}
             {type !== 'Overview' && (
               <>
-                <div className="legend_item legend_item_legislation">Legislation areas</div>
+                <div className="legend_item legend_item_legislation">Legislation</div>
                 <div className="legend_item legend_item_draft_legislation">Draft legislation</div>
                 <div className="legend_item legend_item_no_legislation">No legislation</div>
                 <div className="legend_item">No data</div>
@@ -258,13 +377,6 @@ function App() {
           </div>
           <div className="visualization_container">
             <div className="map_wrapper">
-              {/* <p>
-                <strong>Mapping the size</strong>
-                <br />
-                Trade-weighted average
-                {' '}
-                <i className="circle_info" aria-hidden="true" data-tooltip-id="my-tooltip-1" title="">i</i>
-              </p> */}
               {data !== false && (
                 <ChartMap
                   country={country}
@@ -293,15 +405,7 @@ function App() {
                   >
                     {tableState === 'collapsed' ? '◀◀' : '▶▶'}
                   </button>
-
                 </div>
-                {/* <p>
-                  <strong>Mapping the difference</strong>
-                  <br />
-                  Trade-weighted average
-                  {' '}
-                  <i className="circle_info" aria-hidden="true" data-tooltip-id="my-tooltip-1" title="">i</i>
-                </p> */}
                 <ChartTable
                   country={country}
                   hover_country={hoverCountry}
@@ -330,12 +434,6 @@ function App() {
           </div>
         </div>
       </div>
-      <Tooltip
-        className="my_tooltip"
-        id="my-tooltip-1"
-        place="top"
-        content="The trade-weighted average tariff rate applied to each economy is based on the composition of exports to the US in 2024."
-      />
     </div>
   );
 }

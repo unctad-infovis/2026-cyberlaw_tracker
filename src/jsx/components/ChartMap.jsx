@@ -2,9 +2,9 @@ import React, {
   useEffect, useCallback, useRef, useMemo
 } from 'react';
 import PropTypes from 'prop-types';
+import Highcharts from 'highcharts';
 
 // https://www.highcharts.com/
-import Highcharts from 'highcharts';
 import 'highcharts/modules/map';
 import 'highcharts/modules/accessibility';
 import 'highcharts/modules/exporting';
@@ -12,15 +12,13 @@ import 'highcharts/modules/export-data';
 import 'highcharts/modules/pattern-fill';
 
 // Load map helpers.
+import { renderToString } from 'react-dom/server';
 import processTopoObjectPolygons from '../helpers/map/ProcessTopoObjectPolygons.js';
 import processTopoObject from '../helpers/map/ProcessTopoObject.js';
 import createMaplineSeries from '../helpers/map/CreateMaplineSeries.js';
 import getColor from '../helpers/map/GetColor.js';
 import getValue from '../helpers/map/GetValue.js';
-// import getColorAxis from '../helpers/map/GetColorAxis.js';
-
-// https://www.npmjs.com/package/uuid4
-// import { v4 as uuidv4 } from 'uuid';
+import generateIcon from '../helpers/map/GenerateIcon.jsx';
 
 function ChartMap({
   country = null, hover_country = null, setCountry, setHoverCountry, table_collapsed, type, values
@@ -37,8 +35,9 @@ function ChartMap({
 
   useEffect(() => {
     if (chartMapRef.current?.renderTo) {
-      if (hover_country !== null) {
-        const point = chartMapRef.current.series[0].data.filter(p => p.name === hover_country.label);
+      if (hover_country && hover_country.length > 0) {
+        const point = chartMapRef.current.series[0].data.filter(p => hover_country.some(c => c.label === p.name));
+
         if (point.length > 0) {
           chartMapRef.current.tooltip.refresh(point);
         } else {
@@ -198,13 +197,13 @@ function ChartMap({
                   if (country && country.label === hovered.name) {
                     setCountry({ label: null, value: null });
                   } else {
-                    setCountry({ label: hovered.name, value: hovered.name });
+                    setCountry([{ label: hovered.name, value: hovered.name }]);
                   }
                   return true;
                 },
                 mouseOver() {
                   const hovered = this;
-                  setHoverCountry({ label: hovered.name, value: hovered.name });
+                  setHoverCountry([{ label: hovered.name, value: hovered.name }]);
                   if (hovered.id === 'C00003') {
                     return false;
                   }
@@ -277,12 +276,12 @@ function ChartMap({
           return `
             <div class="tooltip">
               <h5>${point.name}</h5>
-              <div class="main">Legislation in ${point.value} areas</div>
-              <div>Electronic Transactions: ${point.region_data['Electronic Transactions']}</div>
-              <div>Consumer Protection: ${point.region_data['Consumer Protection']}</div>
-              <div>Privacy and Data Protection: ${point.region_data['Privacy and Data Protection']}</div>
-              <div>Cybercrime: ${point.region_data.Cybercrime}</div>
-              <div>Indirect Taxation: ${point.region_data['Indirect Taxation']}</div>
+              <div class="main">Legislation in ${point.value} ${(point.value === 1) ? 'area' : 'areas'}</div>
+              <div><span class="icon">${renderToString(generateIcon(point.region_data['Electronic Transactions']))}</span> Electronic Transactions</div>
+              <div><span class="icon">${renderToString(generateIcon(point.region_data['Consumer Protection']))}</span> Consumer Protection</div>
+              <div><span class="icon">${renderToString(generateIcon(point.region_data['Privacy and Data Protection']))}</span> Privacy and Data Protection</div>
+              <div><span class="icon">${renderToString(generateIcon(point.region_data.Cybercrime))}</span> Cybercrime</div>
+              <div><span class="icon">${renderToString(generateIcon(point.region_data['Indirect Taxation']))}</span> Indirect Taxation</div>
             `;
         },
         style: {
@@ -343,17 +342,21 @@ export default ChartMap;
 
 ChartMap.propTypes = {
   country: PropTypes.oneOfType([
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    }),
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired
+      })
+    ),
     PropTypes.oneOf([null])
   ]),
   hover_country: PropTypes.oneOfType([
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired
-    }),
+    PropTypes.arrayOf(
+      PropTypes.shape({
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired
+      })
+    ),
     PropTypes.oneOf([null])
   ]),
   setCountry: PropTypes.func.isRequired,
