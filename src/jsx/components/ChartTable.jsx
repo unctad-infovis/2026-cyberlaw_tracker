@@ -123,33 +123,34 @@ function ChartTable({
         </>
         )}
       </table>
-      <br />
       <table style={{ width: `${containerSize.width}px` }} cellPadding="0" cellSpacing="0">
         <thead>
-          <tr>
-            <th className="name" colSpan="2">Region</th>
-            <th className="info" colSpan="1">Details</th>
-          </tr>
+          {['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].filter(region => (country ? country.some(c => c.value === region) : true)).length > 0 && (
+            <tr>
+              <th className="name" colSpan="2">Region</th>
+              <th className="info" colSpan="1">Details</th>
+            </tr>
+          )}
         </thead>
         <tbody>
-          {type === 'Overview' && ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].map((region) => {
+          {type === 'Overview' && ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].filter(region => (country ? country.some(c => c.value === region) : true)).map((region) => {
             const rowId = region;
             const isExpanded = !!expandedRows[rowId];
             return (
               <React.Fragment key={rowId}>
                 <tr
-                  className={((isExpanded || (country && country.label === region))) ? 'expanded' : ''}
+                  className={((isExpanded || (country && country.some(c => c.value === region)))) ? 'expanded' : ''}
                   onClick={() => toggleRow(rowId)}
                   style={{ cursor: 'pointer' }}
                 >
                   <td className="name" colSpan="2">{region}</td>
                   <td className="info" colSpan="1">
-                    {(isExpanded || (country && country.label === region)) ? '▼ Hide' : '▶ Show'}
+                    {(isExpanded || (country && country.some(c => c.value === region))) ? '▼ Hide' : '▶ Show'}
                     {' '}
                   </td>
                 </tr>
                 {/* Hidden details row */}
-                {(isExpanded || (country && country.label === region)) && (
+                {(isExpanded || (country && country.some(c => c.value === region))) && (
                   <tr className="subrow">
                     <td colSpan="3">
                       <div className="subrow-content">
@@ -170,24 +171,24 @@ function ChartTable({
               </React.Fragment>
             );
           })}
-          {type !== 'Overview' && ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].map((region) => {
+          {type !== 'Overview' && ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].filter(region => (country ? country.some(c => c.value === region) : true)).map((region) => {
             const rowId = region;
             const isExpanded = !!expandedRows[rowId];
             return (
               <React.Fragment key={rowId}>
                 <tr
-                  className={((isExpanded || (country && country.label === region))) ? 'expanded' : ''}
+                  className={((isExpanded || (country && country.some(c => c.value === region)))) ? 'expanded' : ''}
                   onClick={() => toggleRow(rowId)}
                   style={{ cursor: 'pointer' }}
                 >
                   <td className="name" colSpan="2">{region}</td>
                   <td className="info" colSpan="1">
-                    {(isExpanded || (country && country.label === region)) ? '▼ Hide' : '▶ Show'}
+                    {(isExpanded || (country && country.some(c => c.value === region))) ? '▼ Hide' : '▶ Show'}
                     {' '}
                   </td>
                 </tr>
                 {/* Hidden details row */}
-                {(isExpanded || (country && country.label === region)) && (
+                {(isExpanded || (country && country.some(c => c.value === region))) && (
                   <tr className="subrow">
                     <td colSpan="3">
                       <div className="subrow-content">
@@ -209,13 +210,14 @@ function ChartTable({
             );
           })}
         </tbody>
-        <br />
         <thead>
+          {tableData.length > 0 && (
           <tr>
             <th className="name">Country</th>
             <th>Count</th>
             <th className="info">Details</th>
           </tr>
+          )}
         </thead>
         <tbody>
           {tableData && tableData.map(el => {
@@ -224,19 +226,19 @@ function ChartTable({
             return (
               <React.Fragment key={rowId}>
                 <tr
-                  className={((isExpanded || (country && country.label === el.country))) ? 'expanded' : ''}
+                  className={((isExpanded || (country && country.some(c => c.value === el.country)))) ? 'expanded' : ''}
                   onClick={() => toggleRow(rowId)}
                   style={{ cursor: 'pointer' }}
                 >
                   <td className="name">{el.country}</td>
                   <td className="count">{setCount(el)}</td>
                   <td className="info">
-                    {(isExpanded || (country && country.label === el.country)) ? '▼ Hide' : '▶ Show'}
+                    {(isExpanded || (country && country.some(c => c.value === el.country))) ? '▼ Hide' : '▶ Show'}
                     {' '}
                   </td>
                 </tr>
                 {/* Hidden details row */}
-                {(isExpanded || (country && country.label === el.country)) && (
+                {(isExpanded || (country && country.some(c => c.value === el.country))) && (
                   <tr className="subrow">
                     <td colSpan="3">
                       <div className="subrow-content">
