@@ -209,9 +209,22 @@ function App() {
 
   const changeType = (element) => {
     appRef.current.querySelectorAll('.selection_container.type_selection button').forEach(el => el.classList.remove('active'));
+    appRef.current.querySelector('.description').innerHTML = element.dataset.desc;
     element.classList.add('active');
     setType(element.value);
   };
+
+  const getHashtag = () => decodeURIComponent(window.location.hash.slice(1));
+
+  useEffect(() => {
+    const legislations = ['Electronic Transactions', 'Privacy and Data Protection', 'Cybercrime', 'Consumer Protection', 'Indirect Taxation'];
+    console.log(getHashtag());
+    const hashtag_idx = legislations.indexOf(getHashtag());
+    if (hashtag_idx > -1) {
+      appRef.current.querySelector(`.button_${hashtag_idx + 1}`).click();
+      window.location.hash = '';
+    }
+  }, []);
 
   const changeCountry = (option) => {
     setCountry(option && (!Array.isArray(option) || option.length) ? option : null);
@@ -266,8 +279,7 @@ function App() {
               <h3>Global cyberlaw tracker</h3>
             </div>
           </div>
-          <h4>The UNCTAD Global Cyberlaw Tracker is the first global initiative to map the status of cyberlaw adoption worldwide. It monitors e-commerce legislation across 195 UNCTAD member states, focusing on five key areas: e-transactions, consumer protection, data protection/privacy, cybercrime and indirect taxation.</h4>
-          <h4>The tracker indicates whether a country has enacted relevant legislation, has a draft law under consideration or where the information is unavailable is marked as having. &apos;no data&apos;.</h4>
+          <h4>The UNCTAD Global Cyberlaw Tracker tracks the status of e-commerce and digital trade legislation across 195 countries. It covers laws on data protection and privacy, cybercrime, consumer protection, e-transactions, and indirect taxation. It indicates whether each country has enacted legislation, has a draft law under consideration, or has no data available.</h4>
           <h4>
             If you would like to update or amend your country&apos;s data, please fill in the  questionnaire  and forward your response to
             {' '}
@@ -288,32 +300,32 @@ function App() {
               </div>
               <div className="selection_container type_selection">
                 <div className="selector_container">
-                  <button type="button" className="active" value="Overview" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="active" value="Overview" data-desc="" onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">Overview</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" value="Electronic Transactions" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="button_1" value="Electronic Transactions" data-desc="Covers the legal recognition and validity of electronic communications, contracts, records, and signatures. Includes authentication mechanisms such as electronic signatures, digital certificates, trust services, and electronic record retention." onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">E-transactions</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" value="Privacy and Data Protection" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="button_2" value="Privacy and Data Protection" data-desc="Covers the collection, processing, storage, and transfer of personal data, including individual rights and obligations on those responsible for data control and processing. Includes consent requirements, data subject rights, breach notification rules, and cross-border data transfer frameworks." onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">Data protection and privacy</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" value="Cybercrime" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="button_3" value="Cybercrime" data-desc="Covers offences committed against or through computer systems and data, along with related investigative and procedural powers. Includes unauthorised access, data and system interference, online fraud, digital evidence, and interception powers." onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">Cybercrime</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" value="Consumer Protection" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="button_4" value="Consumer Protection" data-desc="Covers consumer rights and business obligations in online transactions, including information disclosure, unfair commercial practices, and redress mechanisms. Includes distance selling rules, withdrawal rights, platform responsibilities, and dispute resolution." onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">Consumer protection</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" value="Indirect Taxation" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="button_5" value="Indirect Taxation" data-desc="Covers the application and collection of consumption taxes such as VAT or GST on electronic commerce, including cross-border digital goods and services. Includes taxation of digital services, registration of non-resident suppliers, platform liability, and simplified compliance regimes." onClick={(event) => changeType(event.currentTarget)}>
                     <div className="title">Indirect taxation</div>
                   </button>
                 </div>
@@ -353,6 +365,7 @@ function App() {
               </div>
             </div>
           </div>
+          <p className="description" />
           <div className="legend_container">
             {type === 'Overview'
             && (
