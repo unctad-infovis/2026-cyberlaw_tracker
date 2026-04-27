@@ -238,7 +238,6 @@ function ChartTable({
                   </td>
                 </tr>
                 {/* Hidden details row */}
-                {console.log(values[2])}
                 {(isExpanded || (country && country.some(c => c.value === el.country))) && (
                   <tr className="subrow">
                     <td colSpan="3">
