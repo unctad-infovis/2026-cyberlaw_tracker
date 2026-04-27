@@ -238,6 +238,7 @@ function ChartTable({
                   </td>
                 </tr>
                 {/* Hidden details row */}
+                {console.log(values[2])}
                 {(isExpanded || (country && country.some(c => c.value === el.country))) && (
                   <tr className="subrow">
                     <td colSpan="3">
@@ -247,6 +248,8 @@ function ChartTable({
                             <span className="icon">{generateIcon(el[law])}</span>
                             {' '}
                             <span className="label">{law}</span>
+                            {' '}
+                            {values[2][el.code][law] && values[2][el.code][law].map(link => <a href={link[0]} title={link[1]} target="_blank" rel="noreferrer"><img className="download_icon" src="assets/img/document.png" alt="Download document" /></a>)}
                           </div>
                         ))}
                       </div>

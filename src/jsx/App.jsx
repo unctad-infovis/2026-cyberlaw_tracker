@@ -33,13 +33,15 @@ function App() {
 
     const topology_file = 'worldmap-economies-54030.topo.json';
     const data_file = 'data.csv';
+    const document_file = 'document_links.json';
     let values;
     try {
       values = Promise.all([
         fetch(dataPath + topology_file),
         fetch(dataPath + data_file),
+        fetch(dataPath + document_file),
       ]).then(results => Promise.all(results.map((result, i) => {
-        if (i === 0) {
+        if (i === 0 || i === 2) {
           return result.json();
         }
         return result.text();
@@ -218,7 +220,6 @@ function App() {
 
   useEffect(() => {
     const legislations = ['Electronic Transactions', 'Privacy and Data Protection', 'Cybercrime', 'Consumer Protection', 'Indirect Taxation'];
-    console.log(getHashtag());
     const hashtag_idx = legislations.indexOf(getHashtag());
     if (hashtag_idx > -1) {
       appRef.current.querySelector(`.button_${hashtag_idx + 1}`).click();
