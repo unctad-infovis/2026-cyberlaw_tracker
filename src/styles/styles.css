@@ -1,21 +1,32 @@
-@import 'colors.less';
-@import url('https://fonts.googleapis.com/css?family=Inter:100,300.css');
+@import "colors.css";
+@import "basics.css";
+@import url("https://fonts.googleapis.com/css?family=Inter:100,300.css");
 #app-root-2026-cyberlaw_tracker .app {
   background-color: #f2f8fc;
   border-bottom: 6px solid #009edb;
   box-sizing: border-box;
-  font-family: Inter, Helvetica, Arial, sans-serif;
+  font-family: Inter, Arial, sans-serif;
   margin: auto auto;
-  padding: 0 0 20px 0;
   max-width: 1350px;
+  padding: 0 0 20px 0;
+  .my_tooltip {
+    background-color: #fff;
+    color: #000;
+    max-width: 300px;
+    z-index: 2000;
+    a {
+      color: #000;
+      pointer-events: auto;
+    }
+  }
   button {
     outline: none;
   }
   .title_container {
-    padding: 0 20px;
     display: flex;
     flex-direction: row;
     margin: auto auto 20px auto;
+    padding: 0 20px;
     .text_container {
       margin-top: 20px;
       width: 100%;
@@ -55,6 +66,31 @@
     .content {
       margin: auto auto;
       max-width: 1620px;
+      .caption_tooltip {
+        margin: auto auto;
+        text-align: center;
+        button {
+          background-color: #fff;
+          border-radius: 20px;
+          border: 0;
+          font-style: italic;
+          font-weight: 100;
+          padding: 7px 15px;
+        }
+      }
+      .caption_container {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 12px;
+        line-height: 14px;
+        padding: 0 5px;
+        a {
+          color: rgb(0, 158, 219);
+          text-decoration: none;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
       .description {
         margin: 0 0 20px 0;
         max-width: 800px;
@@ -69,8 +105,8 @@
           flex-direction: column;
         }
         .control_container {
-          margin-bottom: 10px;
           flex: 1 1 auto;
+          margin-bottom: 10px;
           .label_container {
             h4 {
               font-size: 18px;
@@ -107,7 +143,7 @@
                 color: #7c7067;
                 font-weight: 300;
                 cursor: pointer;
-                font-family: Inter, Helvetica, Arial, sans-serif;
+                font-family: Inter, Arial, sans-serif;
                 outline: 0;
                 letter-spacing: -0.02em;
                 padding: 3px 10px;
@@ -138,6 +174,7 @@
               }
               .basic-multi-select {
                 font-size: 15px;
+                max-width: 290px;
                 min-width: 290px;
                 width: 100%;
                 z-index: 2000;
@@ -167,9 +204,9 @@
           display: flex;
           margin: 0 5px 5px 5px;
           &:before {
-            background-color: #DED9D5;
+            background-color: #ded9d5;
             border-radius: 100%;
-            content: '';
+            content: "";
             display: inline-block;
             height: 15px;
             margin-right: 3px;
@@ -184,12 +221,12 @@
           }
           &.legend_item_draft_legislation {
             &:before {
-              background-color: #FBAF17;
+              background-color: #fbaf17;
             }
           }
           &.legend_item_no_legislation {
             &:before {
-              background-color: #ED1847;
+              background-color: #ed1847;
             }
           }
           &.legend_item_5 {
@@ -199,27 +236,27 @@
           }
           &.legend_item_4 {
             &:before {
-              background-color: #0077B8;
+              background-color: #0077b8;
             }
           }
           &.legend_item_3 {
             &:before {
-              background-color: #009EDB;
+              background-color: #009edb;
             }
           }
           &.legend_item_2 {
             &:before {
-              background-color: #C5DFEF;
+              background-color: #c5dfef;
             }
           }
           &.legend_item_1 {
             &:before {
-              background-color: #E3EDF6;
+              background-color: #e3edf6;
             }
           }
           &.legend_item_0 {
             &:before {
-              background-color: #ED1847;
+              background-color: #ed1847;
             }
           }
         }
@@ -250,8 +287,8 @@
           height: 100%;
           .map_container {
             height: 100%;
-            // transform: translateX(-200px);
-            // transition: transform 0.3s ease;
+            /*transform: translateX(-200px);*/
+            /*transition: transform 0.3s ease;*/
             width: calc(100% - 400px);
             .tooltip {
               h5 {
@@ -270,16 +307,16 @@
                 height: 14px;
                 width: 14px;
                 &.no_data {
-                  background-color: #AEA29A;
+                  background-color: #aea29a;
                 }
                 &.no_legislation {
-                  background-color: #ED1847;
+                  background-color: #ed1847;
                 }
                 &.draft_legislation {
-                  background-color: #FBAF17;
+                  background-color: #fbaf17;
                 }
                 &.legislation {
-                  background-color: #009EDB;
+                  background-color: #009edb;
                 }
               }
             }
@@ -295,7 +332,9 @@
           position: absolute;
           right: 0;
           top: 5px;
-          transition: transform 0.3s ease, width 0.3s ease;
+          transition:
+            transform 0.3s ease,
+            width 0.3s ease;
           width: calc(100% - 20px);
           z-index: 4;
           &.collapsed {
@@ -317,8 +356,6 @@
               text-align: right;
               vertical-align: middle;
               width: 100%;
-              .bar_number {
-              }
               .bar_unit {
                 padding-right: 5px;
               }
@@ -334,9 +371,6 @@
               line-height: 25px;
               padding: 0px;
               width: 35px;
-              &:hover {
-                opacity: 0.7
-              }
             }
           }
           .table_tooltip {
@@ -345,7 +379,7 @@
             border: 1px solid rgba(0, 73, 135, 0.4);
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
             color: #000;
-            font-family: Inter, Helvetica, Arial, sans-serif;
+            font-family: Inter, Arial, sans-serif;
             font-size: 13px;
             font-weight: 300;
             opacity: 0;
@@ -361,7 +395,7 @@
               border-color: #ffffff transparent transparent transparent;
               border-style: solid;
               border-width: 6px;
-              content: '';
+              content: "";
               filter: drop-shadow(0 2px 2px rgba(0, 73, 135, 0.2));
               left: 50%;
               position: absolute;
@@ -391,13 +425,77 @@
               }
               tbody {
                 width: 100%;
+              }
+              thead,
+              tbody {
                 tr {
+                  td,
+                  th {
+                    &.region {
+                      text-align: left;
+                      width: 40%;
+                    }
+                    &.name {
+                      text-align: left;
+                      width: 40%;
+                    }
+                    &.share {
+                      text-align: left;
+                    }
+                    &.count {
+                      width: 30%;
+                      text-align: center;
+                    }
+                    &.info {
+                      text-align: left;
+                      width: 30%;
+                    }
+                    &.value {
+                      text-align: center;
+                    }
+                  }
                   td {
                     border-bottom: 1px solid #ddd;
+                    padding: 2px;
+                    &.info {
+                      font-size: 12px;
+                      font-weight: 500;
+                      text-transform: uppercase;
+                    }
+                    .subrow-content {
+                      padding: 5px 0 5px 10px;
+                      .label {
+                        font-size: 14px;
+                        line-height: 18px;
+                        vertical-align: middle;
+                      }
+                      span.icon span {
+                        line-height: 18px;
+                        vertical-align: middle;
+                        display: inline-block;
+                        height: 14px;
+                        width: 14px;
+                        &.no_data {
+                          background-color: #aea29a;
+                        }
+                        &.no_legislation {
+                          background-color: #ed1847;
+                        }
+                        &.draft_legislation {
+                          background-color: #fbaf17;
+                        }
+                        &.legislation {
+                          background-color: #009edb;
+                        }
+                      }
+                      .download_icon {
+                        height: 20px;
+                        vertical-align: middle;
+                        width: 20px;
+                      }
+                    }
                   }
                 }
-              }
-              tr {
                 &.expanded {
                   td {
                     border-bottom: 0px solid #ddd;
@@ -406,113 +504,11 @@
                     }
                   }
                 }
-                td,
-                th {
-                  &.region {
-                    text-align: left;
-                    width: 40%;
-                  }
-                  &.name {
-                    text-align: left;
-                    width: 40%;
-                  }
-                  &.share {
-                    text-align: left;
-                  }
-                  &.count {
-                    width: 30%;
-                    text-align: center;
-                  }
-                  &.info {
-                    text-align: left;
-                    width: 30%;
-                  }
-                  &.value {
-                    text-align: center;
-                  }
-                }
-                td {
-                  &.info {
-                    font-size: 12px;
-                    font-weight: 500;
-                    text-transform: uppercase;
-                  }
-                  padding: 2px;
-                  .subrow-content {
-                    padding: 5px 0 5px 10px;
-                    .label {
-                      font-size: 14px;
-                      line-height: 18px;
-                      vertical-align: middle;
-                    }
-                    span.icon span {
-                      line-height: 18px;
-                      vertical-align: middle;
-                      display: inline-block;
-                      height: 14px;
-                      width: 14px;
-                      &.no_data {
-                        background-color: #AEA29A;
-                      }
-                      &.no_legislation {
-                        background-color: #ED1847;
-                      }
-                      &.draft_legislation {
-                        background-color: #FBAF17;
-                      }
-                      &.legislation {
-                        background-color: #009EDB;
-                      }
-                    }
-                    .download_icon {
-                      vertical-align: middle;
-                      height: 20px;
-                      width: 20px;
-                    }
-                  }
-                }
               }
             }
           }
         }
       }
-      .caption_tooltip {
-        margin: auto auto;
-        text-align: center;
-        button {
-          background-color: #fff;
-          border-radius: 20px;
-          border: 0;
-          font-style: italic;
-          font-weight: 100;
-          padding: 7px 15px;
-        }
-      }
-      .caption_container {
-        color: rgba(0, 0.0, 0.0, 0.8);
-        font-size: 12px;
-        line-height: 14px;
-        padding: 0 5px;
-        a {
-          color: rgb(0, 158, 219);
-          text-decoration: none;
-          &:hover {
-          text-decoration: underline;
-          }
-        }
-      }
-    }
-  }
-  .my_tooltip {
-    background-color: #fff;
-    color: #000;
-    max-width: 300px;
-    z-index: 2000;
-    a {
-      color: #000;
-      pointer-events: auto;
     }
   }
 }
-
-@import 'basics.less';

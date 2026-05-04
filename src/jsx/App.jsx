@@ -1,10 +1,7 @@
-import React, {
-  useState, useEffect, useRef, useCallback
-} from 'react';
-import '../styles/styles.less';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import '../styles/styles.css';
 
 // https://www.npmjs.com/package/react-is-visible
-import 'intersection-observer';
 import { useIsVisible } from 'react-is-visible';
 
 import Select from 'react-select';
@@ -28,30 +25,6 @@ function App() {
 
   const [tableState, setTableState] = useState('expanded');
 
-  const fetchExternalData = () => {
-    const dataPath = `${(window.location.href.includes('unctad.org')) ? 'https://storage.unctad.org/2026-cyberlaw_tracker/' : (window.location.href.includes('localhost:80')) ? './' : 'https://unctad-infovis.github.io/2026-cyberlaw_tracker/'}assets/data/`;
-
-    const topology_file = 'worldmap-economies-54030.topo.json';
-    const data_file = 'data.csv';
-    const document_file = 'document_links.json';
-    let values;
-    try {
-      values = Promise.all([
-        fetch(dataPath + topology_file),
-        fetch(dataPath + data_file),
-        fetch(dataPath + document_file),
-      ]).then(results => Promise.all(results.map((result, i) => {
-        if (i === 0 || i === 2) {
-          return result.json();
-        }
-        return result.text();
-      })));
-    } catch (error) {
-      console.error(error);
-    }
-    return values;
-  };
-
   const checkWidth = useCallback(() => {
     if (appRef.current.offsetWidth < 900) {
       setTimeout(() => {
@@ -60,90 +33,6 @@ function App() {
     }
   }, []);
 
-  const calculateLegislationPercentages = (country_data) => {
-    const legislations = [
-      'Consumer Protection',
-      'Cybercrime',
-      'Electronic Transactions',
-      'Indirect Taxation',
-      'Privacy and Data Protection'
-    ];
-
-    const groups = [
-      'Africa',
-      'Asia and Oceania',
-      'Developed countries',
-      'Developing countries',
-      'Landlocked developing countries',
-      'Latin America and Caribbean',
-      'Least developed countries',
-      'Small island developing states'
-    ];
-
-    const statuses = [
-      'Legislation',
-      'Draft Legislation',
-      'No Legislation',
-      'No Data'
-    ];
-
-    const result = {};
-
-    // Initialize structure
-    legislations.forEach((leg) => {
-      result[leg] = {};
-
-      statuses.forEach((status) => {
-        result[leg][status] = { World: 0 };
-
-        groups.forEach((g) => {
-          result[leg][status][g] = 0;
-        });
-      });
-    });
-
-    // Totals per group
-    const totals = {
-      World: country_data.length
-    };
-
-    groups.forEach((g) => {
-      totals[g] = country_data.filter((d) => Number(d[g]) === 1).length;
-    });
-
-    // Count occurrences
-    country_data.forEach((row) => {
-      legislations.forEach((leg) => {
-        const status = row[leg] || 'No Data';
-
-        if (!result[leg][status]) return;
-
-        result[leg][status].World += 1;
-
-        groups.forEach((g) => {
-          if (Number(row[g]) === 1) {
-            result[leg][status][g] += 1;
-          }
-        });
-      });
-    });
-
-    // Convert counts → percentages
-    legislations.forEach((leg) => {
-      statuses.forEach((status) => {
-        result[leg][status].World = (result[leg][status].World / totals.World) * 100;
-
-        groups.forEach((g) => {
-          result[leg][status][g] = totals[g]
-            ? (result[leg][status][g] / totals[g]) * 100
-            : 0;
-        });
-      });
-    });
-
-    return result;
-  };
-
   useEffect(() => {
     if (isVisibleApp === true) {
       checkWidth();
@@ -151,26 +40,100 @@ function App() {
   }, [checkWidth, isVisibleApp]);
 
   useEffect(() => {
-    fetchExternalData().then((result) => {
+    const fetchExternalData = () => {
+      const dataPath = `${window.location.href.includes('unctad.org') ? 'https://storage.unctad.org/2026-cyberlaw_tracker/' : (window.location.href.includes('localhost:80')) ? './' : 'https://unctad-infovis.github.io/2026-cyberlaw_tracker/'}assets/data/`;
+
+      const topology_file = 'worldmap-economies-54030.topo.json';
+      const data_file = 'data.csv';
+      const document_file = 'document_links.json';
+      let values;
+      try {
+        values = Promise.all([fetch(dataPath + topology_file), fetch(dataPath + data_file), fetch(dataPath + document_file)]).then(results =>
+          Promise.all(
+            results.map((result, i) => {
+              if (i === 0 || i === 2) {
+                return result.json();
+              }
+              return result.text();
+            })
+          )
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      return values;
+    };
+
+    const calculateLegislationPercentages = country_data => {
+      const legislations = ['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'];
+
+      const groups = ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'];
+
+      const statuses = ['Legislation', 'Draft Legislation', 'No Legislation', 'No Data'];
+
+      const result = {};
+
+      // Initialize structure
+      legislations.forEach(leg => {
+        result[leg] = {};
+
+        statuses.forEach(status => {
+          result[leg][status] = { World: 0 };
+
+          groups.forEach(g => {
+            result[leg][status][g] = 0;
+          });
+        });
+      });
+
+      // Totals per group
+      const totals = {
+        World: country_data.length
+      };
+
+      groups.forEach(g => {
+        totals[g] = country_data.filter(d => Number(d[g]) === 1).length;
+      });
+
+      // Count occurrences
+      country_data.forEach(row => {
+        legislations.forEach(leg => {
+          const status = row[leg] || 'No Data';
+
+          if (!result[leg][status]) return;
+
+          result[leg][status].World += 1;
+
+          groups.forEach(g => {
+            if (Number(row[g]) === 1) {
+              result[leg][status][g] += 1;
+            }
+          });
+        });
+      });
+
+      // Convert counts → percentages
+      legislations.forEach(leg => {
+        statuses.forEach(status => {
+          result[leg][status].World = (result[leg][status].World / totals.World) * 100;
+
+          groups.forEach(g => {
+            result[leg][status][g] = totals[g] ? (result[leg][status][g] / totals[g]) * 100 : 0;
+          });
+        });
+      });
+
+      return result;
+    };
+    fetchExternalData().then(result => {
       result[1] = CSVtoJSON(result[1]);
 
       result[1] = result[1].map(el => {
-        const categories = [
-          'Consumer Protection',
-          'Cybercrime',
-          'Electronic Transactions',
-          'Indirect Taxation',
-          'Privacy and Data Protection'
-        ];
+        const categories = ['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'];
 
-        const count = categories.reduce(
-          (total, category) => total + (el[category] === 'Legislation' ? 1 : 0),
-          0
-        );
+        const count = categories.reduce((total, category) => total + (el[category] === 'Legislation' ? 1 : 0), 0);
 
-        el.country = (
-          result[0].objects.economies.geometries.find(geometry => geometry.properties.code === el.code)
-        ).properties.labelen;
+        el.country = result[0].objects.economies.geometries.find(geometry => geometry.properties.code === el.code).properties.labelen;
 
         return {
           ...el,
@@ -178,28 +141,32 @@ function App() {
         };
       });
 
-      const groups = [{
-        label: 'Country groups',
-        options: [
-          { value: 'World', label: 'World' },
-          { value: 'Africa', label: 'Africa' },
-          { value: 'Asia and Oceania', label: 'Asia and Oceania' },
-          { value: 'Developed countries', label: 'Developed countries' },
-          { value: 'Developing countries', label: 'Developing countries' },
-          { value: 'Landlocked developing countries', label: 'Landlocked developing countries (LLDCs)' },
-          { value: 'Latin America and Caribbean', label: 'Latin America and Caribbean' },
-          { value: 'Least developed countries', label: 'Least developed countries (LDCs)' },
-          { value: 'Small island developing states', label: 'Small island developing states (SIDS)' }
-        ]
-      }];
+      const groups = [
+        {
+          label: 'Country groups',
+          options: [
+            { value: 'World', label: 'World' },
+            { value: 'Africa', label: 'Africa' },
+            { value: 'Asia and Oceania', label: 'Asia and Oceania' },
+            { value: 'Developed countries', label: 'Developed countries' },
+            { value: 'Developing countries', label: 'Developing countries' },
+            { value: 'Landlocked developing countries', label: 'Landlocked developing countries (LLDCs)' },
+            { value: 'Latin America and Caribbean', label: 'Latin America and Caribbean' },
+            { value: 'Least developed countries', label: 'Least developed countries (LDCs)' },
+            { value: 'Small island developing states', label: 'Small island developing states (SIDS)' }
+          ]
+        }
+      ];
 
-      const countries = [{
-        label: 'Countries',
-        options: result[1]
-          .slice()
-          .sort((a, b) => a.country.localeCompare(b.country))
-          .map((el) => ({ value: el.country, label: el.country }))
-      }];
+      const countries = [
+        {
+          label: 'Countries',
+          options: result[1]
+            .slice()
+            .sort((a, b) => a.country.localeCompare(b.country))
+            .map(el => ({ value: el.country, label: el.country }))
+        }
+      ];
 
       setOptions([...groups, ...countries]);
       // NEW: calculate legislation percentages
@@ -209,16 +176,17 @@ function App() {
     });
   }, []);
 
-  const changeType = (element) => {
-    appRef.current.querySelectorAll('.selection_container.type_selection button').forEach(el => el.classList.remove('active'));
+  const changeType = element => {
+    for (const el of appRef.current.querySelectorAll('.selection_container.type_selection button')) {
+      el.classList.remove('active');
+    }
     appRef.current.querySelector('.description').innerHTML = element.dataset.desc;
     element.classList.add('active');
     setType(element.value);
   };
 
-  const getHashtag = () => decodeURIComponent(window.location.hash.slice(1));
-
   useEffect(() => {
+    const getHashtag = () => decodeURIComponent(window.location.hash.slice(1));
     const legislations = ['Electronic Transactions', 'Privacy and Data Protection', 'Cybercrime', 'Consumer Protection', 'Indirect Taxation'];
     const hashtag_idx = legislations.indexOf(getHashtag());
     if (hashtag_idx > -1) {
@@ -227,13 +195,13 @@ function App() {
     }
   }, []);
 
-  const changeCountry = (option) => {
+  const changeCountry = option => {
     setCountry(option && (!Array.isArray(option) || option.length) ? option : null);
     setHoverCountry(option && (!Array.isArray(option) || option.length) ? option : null);
   };
 
   const customStyles = {
-  // outer control (border, background)
+    // outer control (border, background)
     control: (provided, state) => ({
       ...provided,
       boxShadow: state.isFocused ? provided.boxShadow : null,
@@ -241,34 +209,34 @@ function App() {
       minHeight: 28 // control height
     }),
     // area that contains value & input
-    valueContainer: (provided) => ({
+    valueContainer: provided => ({
       ...provided,
       height: 28,
       padding: '0 8px'
     }),
     // input itself (text cursor area)
-    input: (provided) => ({
+    input: provided => ({
       ...provided,
       margin: 0,
       padding: 0
     }),
     // the selected value text (single)
-    singleValue: (provided) => ({
+    singleValue: provided => ({
       ...provided,
       marginTop: 17,
       transform: 'translateY(-50%)'
     }),
     // indicators on the right (chevron, clear)
-    indicatorsContainer: (provided) => ({
+    indicatorsContainer: provided => ({
       ...provided,
       height: 28
     }),
     // controls the dropdown option height/padding
-    option: (provided) => ({
+    option: provided => ({
       ...provided,
       minHeight: 38,
       padding: '10px 12px'
-    }),
+    })
   };
   return (
     <div className="app" ref={appRef}>
@@ -280,12 +248,16 @@ function App() {
               <h3>Global cyberlaw tracker</h3>
             </div>
           </div>
-          <h4>The UNCTAD Global Cyberlaw Tracker tracks the status of e-commerce and digital trade legislation across 195 countries. It covers laws on data protection and privacy, cybercrime, consumer protection, e-transactions, and indirect taxation. It indicates whether each country has enacted legislation, has a draft law under consideration, or has no data available.</h4>
           <h4>
-            If you would like to update or amend your country&apos;s data, please fill in the  questionnaire  and forward your response to
-            {' '}
-            <a href="mailto:ecde@unctad.org">ecde@unctad.org</a>
-            .
+            The UNCTAD Global Cyberlaw Tracker tracks the status of e-commerce and digital trade legislation across 195 countries. It covers laws on data protection and privacy, cybercrime, consumer protection, e-transactions, and indirect taxation. It indicates whether each country has enacted legislation, has a draft
+            law under consideration, or has no data available.
+          </h4>
+          <h4>
+            If you would like to update or amend your country&apos;s data, please fill in the{' '}
+            <a href="https://forms.office.com/pages/responsepage.aspx?id=2zWeD09UYE-9zF6kFubccMbVWNVWma5OgfGEf7w5vipUODlFRDM3ME5YTjdYMEpKMjBHMkRQUThBTS4u&route=shorturl" target="_blank" rel="noreferrer">
+              questionnaire
+            </a>{' '}
+            and forward your response to <a href="mailto:ecde@unctad.org">ecde@unctad.org</a>.
           </h4>
         </div>
       </div>
@@ -301,32 +273,62 @@ function App() {
               </div>
               <div className="selection_container type_selection">
                 <div className="selector_container">
-                  <button type="button" className="active" value="Overview" data-desc="" onClick={(event) => changeType(event.currentTarget)}>
+                  <button type="button" className="active" value="Overview" data-desc="" onClick={event => changeType(event.currentTarget)}>
                     <div className="title">Overview</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" className="button_1" value="Electronic Transactions" data-desc="Covers the legal recognition and validity of electronic communications, contracts, records, and signatures. Includes authentication mechanisms such as electronic signatures, digital certificates, trust services, and electronic record retention." onClick={(event) => changeType(event.currentTarget)}>
+                  <button
+                    type="button"
+                    className="button_1"
+                    value="Electronic Transactions"
+                    data-desc="Covers the legal recognition and validity of electronic communications, contracts, records, and signatures. Includes authentication mechanisms such as electronic signatures, digital certificates, trust services, and electronic record retention."
+                    onClick={event => changeType(event.currentTarget)}
+                  >
                     <div className="title">E-transactions</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" className="button_2" value="Privacy and Data Protection" data-desc="Covers the collection, processing, storage, and transfer of personal data, including individual rights and obligations on those responsible for data control and processing. Includes consent requirements, data subject rights, breach notification rules, and cross-border data transfer frameworks." onClick={(event) => changeType(event.currentTarget)}>
+                  <button
+                    className="button_2"
+                    data-desc="Covers the collection, processing, storage, and transfer of personal data, including individual rights and obligations on those responsible for data control and processing. Includes consent requirements, data subject rights, breach notification rules, and cross-border data transfer frameworks."
+                    onClick={event => changeType(event.currentTarget)}
+                    type="button"
+                    value="Privacy and Data Protection"
+                  >
                     <div className="title">Data protection and privacy</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" className="button_3" value="Cybercrime" data-desc="Covers offences committed against or through computer systems and data, along with related investigative and procedural powers. Includes unauthorised access, data and system interference, online fraud, digital evidence, and interception powers." onClick={(event) => changeType(event.currentTarget)}>
+                  <button
+                    className="button_3"
+                    data-desc="Covers offences committed against or through computer systems and data, along with related investigative and procedural powers. Includes unauthorised access, data and system interference, online fraud, digital evidence, and interception powers."
+                    onClick={event => changeType(event.currentTarget)}
+                    type="button"
+                    value="Cybercrime"
+                  >
                     <div className="title">Cybercrime</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" className="button_4" value="Consumer Protection" data-desc="Covers consumer rights and business obligations in online transactions, including information disclosure, unfair commercial practices, and redress mechanisms. Includes distance selling rules, withdrawal rights, platform responsibilities, and dispute resolution." onClick={(event) => changeType(event.currentTarget)}>
+                  <button
+                    className="button_4"
+                    data-desc="Covers consumer rights and business obligations in online transactions, including information disclosure, unfair commercial practices, and redress mechanisms. Includes distance selling rules, withdrawal rights, platform responsibilities, and dispute resolution."
+                    onClick={event => changeType(event.currentTarget)}
+                    type="button"
+                    value="Consumer Protection"
+                  >
                     <div className="title">Consumer protection</div>
                   </button>
                 </div>
                 <div className="selector_container">
-                  <button type="button" className="button_5" value="Indirect Taxation" data-desc="Covers the application and collection of consumption taxes such as VAT or GST on electronic commerce, including cross-border digital goods and services. Includes taxation of digital services, registration of non-resident suppliers, platform liability, and simplified compliance regimes." onClick={(event) => changeType(event.currentTarget)}>
+                  <button
+                    className="button_5"
+                    data-desc="Covers the application and collection of consumption taxes such as VAT or GST on electronic commerce, including cross-border digital goods and services. Includes taxation of digital services, registration of non-resident suppliers, platform liability, and simplified compliance regimes."
+                    onClick={event => changeType(event.currentTarget)}
+                    type="button"
+                    value="Indirect Taxation"
+                  >
                     <div className="title">Indirect taxation</div>
                   </button>
                 </div>
@@ -341,26 +343,25 @@ function App() {
               </div>
               <div className="selection_container">
                 <div className="selector_container">
-                  {options
-                  && (
-                  <Select
-                    className="basic-multi-select"
-                    classNamePrefix="select"
-                    defaultValue=""
-                    isClearable
-                    isDisabled={false}
-                    isLoading={false}
-                    isMulti
-                    isOptionDisabled={(option) => option.isdisabled}
-                    isRtl={false}
-                    isSearchable
-                    name="country"
-                    onChange={(selectedOption) => changeCountry(selectedOption)}
-                    options={options}
-                    placeholder="Select economy "
-                    styles={customStyles}
-                    value={country}
-                  />
+                  {options && (
+                    <Select
+                      className="basic-multi-select"
+                      classNamePrefix="select"
+                      defaultValue=""
+                      isClearable
+                      isDisabled={false}
+                      isLoading={false}
+                      isMulti
+                      isOptionDisabled={option => option.isdisabled}
+                      isRtl={false}
+                      isSearchable
+                      name="country"
+                      onChange={selectedOption => changeCountry(selectedOption)}
+                      options={options}
+                      placeholder="Select economy "
+                      styles={customStyles}
+                      value={country}
+                    />
                   )}
                 </div>
               </div>
@@ -368,8 +369,7 @@ function App() {
           </div>
           <p className="description" />
           <div className="legend_container">
-            {type === 'Overview'
-            && (
+            {type === 'Overview' && (
               <>
                 <div className="legend_item legend_item_5">5 areas</div>
                 <div className="legend_item legend_item_4">4 areas</div>
@@ -390,19 +390,7 @@ function App() {
             )}
           </div>
           <div className="visualization_container">
-            <div className="map_wrapper">
-              {data !== false && (
-                <ChartMap
-                  country={country}
-                  hover_country={hoverCountry}
-                  table_collapsed={tableState}
-                  setCountry={setCountry}
-                  setHoverCountry={setHoverCountry}
-                  type={type}
-                  values={data}
-                />
-              )}
-            </div>
+            <div className="map_wrapper">{data !== false && <ChartMap country={country} hover_country={hoverCountry} table_collapsed={tableState} setCountry={setCountry} setHoverCountry={setHoverCountry} type={type} values={data} />}</div>
             {data !== false && (
               <div className={`table_wrapper ${tableState}`}>
                 <div className="table_controls_container">
@@ -420,31 +408,22 @@ function App() {
                     {tableState === 'collapsed' ? '◀◀' : '▶▶'}
                   </button>
                 </div>
-                <ChartTable
-                  country={country}
-                  hover_country={hoverCountry}
-                  setCountry={setCountry}
-                  setHoverCountry={setHoverCountry}
-                  table_collapsed={tableState}
-                  type={type}
-                  values={data}
-                />
+                <ChartTable country={country} hover_country={hoverCountry} setCountry={setCountry} setHoverCountry={setHoverCountry} table_collapsed={tableState} type={type} values={data} />
               </div>
             )}
           </div>
           <div className="caption_container">
-            <em>Source:</em>
-            {' '}
-            UN Trade and Development (UNCTAD)
+            <em>Source:</em> UN Trade and Development (UNCTAD)
             <br />
-            <em>Note:</em>
-            {' '}
-            The Cyberlaw Tracker is the result of a collaborative effort and rely on the data provided by member states, various organizations such as UNCITRAL and individuals such as Graham Greenleaf, Professor of Law and Information Systems at UNSW Australia Faculty of Law.
-            {' '}
-            <a href="https://unctad.org/page/map-disclaimer" target="_blank" rel="noreferrer">Map disclaimer</a>
+            <em>Note:</em> The Cyberlaw Tracker is the result of a collaborative effort and rely on the data provided by member states, various organizations such as UNCITRAL and individuals such as Graham Greenleaf, Professor of Law and Information Systems at UNSW Australia Faculty of Law.{' '}
+            <a className="caption_link" href="https://unctad.org/page/map-disclaimer" target="_blank" rel="noreferrer">
+              Map disclaimer
+            </a>
             .
             <br />
-            <a href="https://storage.unctad.org/2026-cyberlaw_tracker/assets/data/data.csv" target="_blank" rel="noreferrer">Get the data</a>
+            <a href="https://storage.unctad.org/2026-cyberlaw_tracker/assets/data/data.csv" target="_blank" rel="noreferrer">
+              Get the data
+            </a>
           </div>
         </div>
       </div>

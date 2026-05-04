@@ -42,9 +42,10 @@ function getColorFromValue(value, region_data, type) {
 
 // Define a color mapping function based on value **and code**
 const getColor = (region_data, code, data, type, china_areas) => {
-  const value = (region_data) ? region_data.value : null;
+  const value = region_data ? region_data.value : null;
   // First check if this code is special
-  if (code === 'C00002') { // AksaiChin
+  if (code === 'C00002') {
+    // AksaiChin
     const kashmirData = data.find(item => item.code === 'C00007'); // Find kashmir in data
     const kashmirValue = kashmirData ? kashmirData.value : null; // Get kashmir's value, default to null
     const chinaData = data.find(item => item.code === '156'); // Find china in data
@@ -56,23 +57,26 @@ const getColor = (region_data, code, data, type, china_areas) => {
         height: 10 / 100000, // Height of the pattern
         path: {
           d: 'M 0 10 L 10 0 M -1 1 L 1 -1 M 9 11 L 11 9',
-          strokeWidth: 2.5 * Math.sqrt(2),
+          strokeWidth: 2.5 * Math.sqrt(2)
         },
         width: 10 // Width of the pattern
       }
     };
   }
-  if (code === 'C00003') { // ArunachalPradesh = India
+  if (code === 'C00003') {
+    // ArunachalPradesh = India
     const indiaData = data.find(item => item.code === '356');
     const indiaValue = indiaData ? indiaData.value : null;
     return getColorFromValue(indiaValue, indiaData, type);
   }
-  if (code === '412') { // Kosovo = Serbia
+  if (code === '412') {
+    // Kosovo = Serbia
     const serbiaData = data.find(item => item.code === '688');
     const serbiaValue = serbiaData ? serbiaData.value : null;
     return getColorFromValue(serbiaValue, serbiaData, type);
   }
-  if (china_areas.includes(code)) { // Macao, HongKong, China, Taiwan = China
+  if (china_areas.includes(code)) {
+    // Macao, HongKong, China, Taiwan = China
     const chinaData = data.find(item => item.code === '156');
     const chinaValue = chinaData ? chinaData.value : null;
     return getColorFromValue(chinaValue, chinaData, type);

@@ -1,7 +1,4 @@
-import React, {
-} from 'react';
-
-const generateIcon = (value) => {
+const generateIcon = value => {
   if (value === 'No Data') {
     return <span className="no_data" />;
   }

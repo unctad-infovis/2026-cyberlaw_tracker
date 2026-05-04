@@ -24,10 +24,7 @@ const processTopoObjectPolygons = (topologyObjectPolygons, objectName) => {
 
       // Apply the transformation to convert from projected to lat/lon
       const coordinateScaleFactor = 1 / 100000;
-      return [
-        (currentPoint[0] * transform.scale[0] + transform.translate[0]) * coordinateScaleFactor,
-        (currentPoint[1] * transform.scale[1] + transform.translate[1]) * coordinateScaleFactor
-      ];
+      return [(currentPoint[0] * transform.scale[0] + transform.translate[0]) * coordinateScaleFactor, (currentPoint[1] * transform.scale[1] + transform.translate[1]) * coordinateScaleFactor];
     });
 
     // If the original index was negative, reverse the decoded arc
@@ -56,9 +53,7 @@ const processTopoObjectPolygons = (topologyObjectPolygons, objectName) => {
       return {
         geometry: {
           type: geometry.type,
-          coordinates: geometry.type === 'Polygon'
-            ? decodedCoordinates
-            : decodedCoordinates
+          coordinates: geometry.type === 'Polygon' ? decodedCoordinates : decodedCoordinates
         },
         properties: geometry.properties
       };

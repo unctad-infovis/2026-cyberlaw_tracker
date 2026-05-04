@@ -23,10 +23,7 @@ const processTopoObject = (topologyObject, objectName) => {
 
       // Apply the transformation to convert from projected to lat/lon
       const coordinateScaleFactor = 1 / 100000;
-      return [
-        (currentPoint[0] * transform.scale[0] + transform.translate[0]) * coordinateScaleFactor,
-        (currentPoint[1] * transform.scale[1] + transform.translate[1]) * coordinateScaleFactor
-      ];
+      return [(currentPoint[0] * transform.scale[0] + transform.translate[0]) * coordinateScaleFactor, (currentPoint[1] * transform.scale[1] + transform.translate[1]) * coordinateScaleFactor];
     });
 
     // If the original index was negative, reverse the decoded arc
@@ -56,9 +53,10 @@ const processTopoObject = (topologyObject, objectName) => {
     return {
       geometry: {
         type: geometry.type,
-        coordinates: geometry.type === 'LineString'
-          ? decodedCoordinates[0] // Flatten for LineString
-          : multiLineCoordinates // Combined MultiLineString
+        coordinates:
+          geometry.type === 'LineString'
+            ? decodedCoordinates[0] // Flatten for LineString
+            : multiLineCoordinates // Combined MultiLineString
       },
       properties: geometry.properties
     };
