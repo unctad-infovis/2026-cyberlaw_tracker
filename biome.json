@@ -29,6 +29,11 @@
       "arrowParentheses": "asNeeded"
     }
   },
+  "css": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
   "assist": {
     "enabled": true,
     "actions": {
