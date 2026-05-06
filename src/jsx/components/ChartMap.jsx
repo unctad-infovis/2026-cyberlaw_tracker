@@ -286,7 +286,7 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
           enabled: true,
           formatter() {
             return `
-            <div class="tooltip">
+            <div class="map_tooltip">
               <h5>${this.name}</h5>
               <div class="main">Legislation in ${this.value} ${this.value === 1 ? 'area' : 'areas'}</div>
               <div><span class="icon">${renderToString(generateIcon(this.region_data['Electronic Transactions']))}</span> Electronic Transactions</div>

@@ -245,20 +245,9 @@ function App() {
           <div className="main_title_container">
             <img src="https://static.dwcdn.net/custom/themes/unctad-2024-rebrand/Blue%20arrow.svg" className="logo" alt="UN Trade and Development logo" width="44" height="44" />
             <div className="title">
-              <h3>Global cyberlaw tracker</h3>
+              <h3>Browse the data</h3>
             </div>
           </div>
-          <h4>
-            The UNCTAD Global Cyberlaw Tracker tracks the status of e-commerce and digital trade legislation across 195 countries. It covers laws on data protection and privacy, cybercrime, consumer protection, e-transactions, and indirect taxation. It indicates whether each country has enacted legislation, has a draft
-            law under consideration, or has no data available.
-          </h4>
-          <h4>
-            If you would like to update or amend your country&apos;s data, please fill in the{' '}
-            <a href="https://forms.office.com/pages/responsepage.aspx?id=2zWeD09UYE-9zF6kFubccMbVWNVWma5OgfGEf7w5vipUODlFRDM3ME5YTjdYMEpKMjBHMkRQUThBTS4u&route=shorturl" target="_blank" rel="noreferrer">
-              questionnaire
-            </a>{' '}
-            and forward your response to <a href="mailto:ecde@unctad.org">ecde@unctad.org</a>.
-          </h4>
         </div>
       </div>
       <div className="visualizations_container">
@@ -413,7 +402,7 @@ function App() {
             )}
           </div>
           <div className="caption_container">
-            <em>Source:</em> UN Trade and Development (UNCTAD)
+            <em>Source:</em> UN Trade and Development (UNCTAD). Updated 17 February 2026.
             <br />
             <em>Note:</em> The Cyberlaw Tracker is the result of a collaborative effort and rely on the data provided by member states, various organizations such as UNCITRAL and individuals such as Graham Greenleaf, Professor of Law and Information Systems at UNSW Australia Faculty of Law.{' '}
             <a className="caption_link" href="https://unctad.org/page/map-disclaimer" target="_blank" rel="noreferrer">
