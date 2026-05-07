@@ -44,8 +44,8 @@ function App() {
       const dataPath = `${window.location.href.includes('unctad.org') ? 'https://storage.unctad.org/2026-cyberlaw_tracker/' : (window.location.href.includes('localhost:80')) ? './' : 'https://unctad-infovis.github.io/2026-cyberlaw_tracker/'}assets/data/`;
 
       const topology_file = 'worldmap-economies-54030.topo.json';
-      const data_file = 'data.csv?v2026-05-07';
-      const document_file = 'document_links.json?v2026-05-07';
+      const data_file = 'data.csv?2026-05-07';
+      const document_file = 'document_links.json?2026-05-07';
       let values;
       try {
         values = Promise.all([fetch(dataPath + topology_file), fetch(dataPath + data_file), fetch(dataPath + document_file)]).then(results =>
