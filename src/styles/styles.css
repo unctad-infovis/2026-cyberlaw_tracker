@@ -7,22 +7,12 @@
   margin: auto auto;
   max-width: 1350px;
   padding: 20px 0 20px 0;
-  .my_tooltip {
-    background-color: #fff;
-    color: #000;
-    max-width: 300px;
-    z-index: 2000;
-    a {
-      color: #000;
-      pointer-events: auto;
-    }
-  }
   button {
     outline: none;
   }
   .title_container {
-    display: flex;
     background-color: #fff;
+    display: flex;
     flex-direction: row;
     margin: auto auto 20px auto;
     padding: 0 20px;
@@ -176,7 +166,7 @@
                 max-width: 290px;
                 min-width: 290px;
                 width: 100%;
-                z-index: 2000;
+                z-index: 5;
                 .select__control {
                   box-shadow: none;
                   svg {
