@@ -10,14 +10,16 @@ import 'highcharts/modules/export-data';
 import 'highcharts/modules/map';
 import 'highcharts/modules/pattern-fill';
 
-// Load map helpers.
 import { renderToString } from 'react-dom/server';
-import createMaplineSeries from '../helpers/map/CreateMaplineSeries.js';
-import generateIcon from '../helpers/map/GenerateIcon.jsx';
-import getColor from '../helpers/map/GetColor.js';
-import getValue from '../helpers/map/GetValue.js';
-import processTopoObject from '../helpers/map/ProcessTopoObject.js';
-import processTopoObjectPolygons from '../helpers/map/ProcessTopoObjectPolygons.js';
+
+// Load helpers.
+import generateIcon from './helpers/GenerateIcon.jsx';
+import createMaplineSeries from './map/CreateMaplineSeries.js';
+import getColor from './map/GetColor.js';
+import getValue from './map/GetValue.js';
+import getRegionData from './map/getRegionData.js';
+import processTopoObject from './map/ProcessTopoObject.js';
+import processTopoObjectPolygons from './map/ProcessTopoObjectPolygons.js';
 
 function ChartMap({ country = null, hover_country = null, setCountry, setHoverCountry, table_collapsed, type, values }) {
   const chartMapRef = useRef(null);
@@ -52,13 +54,12 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
       if (!series?.points?.length) return;
 
       series.points.forEach(point => {
-        const code = point.id;
-        const newColor = getColor(point.region_data, code, values[1], type, chinaAreas);
-
-        point.update(
-          { color: newColor },
-          false // do not redraw yet
-        );
+        if (point.region_data) {
+          point.update(
+            { color: getColor(point.region_data, values.data, chinaAreas, type) },
+            false // do not redraw yet
+          );
+        }
       });
 
       chartMapRef.current.redraw();
@@ -193,30 +194,19 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
           {
             // The colored layer series.
             affectsMapView: true,
-            data: processTopoObjectPolygons(topology, 'economies-color').map(region => {
-              const { code } = region.properties; // Store region code
-              const region_data = getValue(code, data, region, chinaAreas);
-              const value = region_data ? region_data.value : null;
-              let labelen = code;
-              if (labelMap[code]) {
-                labelen = labelMap[code].labelen;
-              }
+            mapData: processTopoObjectPolygons(topology, 'economies-color'),
+            data: topology.objects.economies.geometries.map(region => {
+              const found = data.find(d => d.code === region.properties.code);
+              region.properties = found ? { ...region.properties, ...found } : region.properties;
               return {
                 borderWidth: 0,
-                color: getColor(region_data, code, data, type, chinaAreas),
-                geometry: region.geometry,
-                id: code,
+                code: region.properties.code,
+                color: getColor(region.properties, data, chinaAreas, type),
                 events: {
                   click() {
-                    if (country && country.label === this.name) {
-                      setCountry({ label: null, value: null });
-                    } else {
-                      setCountry([{ label: this.name, value: this.name }]);
-                    }
                     return true;
                   },
                   mouseOver() {
-                    setHoverCountry([{ label: this.name, value: this.name }]);
                     if (this.id === 'C00003') {
                       return false;
                     }
@@ -233,16 +223,18 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
                     chinaAreas.forEach(area => {
                       chart.get(area)?.setState('');
                     });
-                    setHoverCountry(null);
                   }
                 },
-                region_data,
-                name: labelen,
-                value
+                region_data: getRegionData(region.properties, data, chinaAreas),
+                id: region.properties.code,
+                name: region.properties.labelen,
+                value: getValue(region.properties, data, chinaAreas)
               };
             }),
             enableMouseTracking: true,
+            joinBy: ['code', 'code'],
             name: 'economies_color',
+            nullColor: '#ded9d5',
             states: {
               hover: {
                 borderColor: '#fff',
@@ -254,23 +246,6 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
             },
             type: 'map',
             visible: true
-          },
-          {
-            // The helper layer series for tooltips.
-            affectsMapView: false,
-            data: processTopoObjectPolygons(topology, 'economies').map(region => ({
-              borderWidth: 0,
-              geometry: region.geometry
-            })),
-            enableMouseTracking: false,
-            name: 'economies',
-            states: {
-              inactive: {
-                enabled: false
-              }
-            },
-            type: 'map',
-            visible: false
           },
           // Using the function to create mapline series
           createMaplineSeries('dash_borders', processTopoObject(topology, 'dashed-borders'), 'Dash'),
@@ -294,7 +269,7 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
               <div><span class="icon">${renderToString(generateIcon(this.region_data['Privacy and Data Protection']))}</span> Privacy and Data Protection</div>
               <div><span class="icon">${renderToString(generateIcon(this.region_data.Cybercrime))}</span> Cybercrime</div>
               <div><span class="icon">${renderToString(generateIcon(this.region_data['Indirect Taxation']))}</span> Indirect Taxation</div>
-            `;
+            </div>`;
           },
           style: {
             color: '#000',
@@ -314,11 +289,12 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
         }
       };
     },
-    [chinaAreas, country, setHoverCountry, setCountry, type]
+    [chinaAreas, type]
   );
 
   useEffect(() => {
-    const [topology, data] = values;
+    if (!values.topology) return;
+    const { data, topology } = values;
 
     // Extract the transformation values from the TopoJSON
     const { scale, translate } = topology.transform;

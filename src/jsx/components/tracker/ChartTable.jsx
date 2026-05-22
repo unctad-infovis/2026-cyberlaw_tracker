@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 
-import generateIcon from '../helpers/map/GenerateIcon.jsx';
-import roundNr from '../helpers/RoundNr.js';
+// Load helpers.
+import roundNr from './../../helpers/RoundNr.js';
+import generateIcon from './helpers/GenerateIcon.jsx';
 
 function ChartTable({ country = null, type, values }) {
   const chartTableRef = useRef(null);
@@ -32,9 +32,9 @@ function ChartTable({ country = null, type, values }) {
 
   useEffect(() => {
     if (country) {
-      setTableData(values[1].filter(el => country.some(c => c.label === el.country)));
+      setTableData(values.data.filter(el => country.some(c => c.label === el.country)));
     } else {
-      setTableData(values[1]);
+      setTableData(values.data);
     }
   }, [country, values]);
 
@@ -79,7 +79,7 @@ function ChartTable({ country = null, type, values }) {
                       <div>
                         <span className="bar" style={{ width: `${values.legislationStats[law_name].Legislation.World}%` }}>
                           <span className="bar_value">
-                            <span className="bar_number">{roundNr(values.legislationStats[law_name].Legislation.World, 0)}</span>
+                            <span className="bar_number">{roundNr({ x: values.legislationStats[law_name].Legislation.World, d: 0 })}</span>
                             <span className="bar_unit">%</span>
                           </span>
                         </span>
@@ -107,7 +107,7 @@ function ChartTable({ country = null, type, values }) {
                       <div>
                         <span className="bar" style={{ width: `${values.legislationStats[type].Legislation[region]}%` }}>
                           <span className="bar_value">
-                            <span className="bar_number">{roundNr(values.legislationStats[type].Legislation[region], 0)}</span>
+                            <span className="bar_number">{roundNr({ x: values.legislationStats[type].Legislation[region], d: 0 })}</span>
                             <span className="bar_unit">%</span>
                           </span>
                         </span>
@@ -158,7 +158,7 @@ function ChartTable({ country = null, type, values }) {
                               <div key={law_name}>
                                 <span className="label">{law_name}</span>
                                 {': '}
-                                <span className="label">{roundNr(values.legislationStats[law_name].Legislation[region], 0)}%</span>
+                                <span className="label">{roundNr({ x: values.legislationStats[law_name].Legislation[region], d: 0 })}%</span>
                               </div>
                             ))}
                           </div>
@@ -233,8 +233,8 @@ function ChartTable({ country = null, type, values }) {
                           {['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'].map(law => (
                             <div key={law}>
                               <span className="icon">{generateIcon(el[law])}</span> <span className="label">{law}</span>{' '}
-                              {values[2][el.code][law] &&
-                                values[2][el.code][law].map(link => (
+                              {values.document_links[el.code][law] &&
+                                values.document_links[el.code][law].map(link => (
                                   <a href={link[0]} key={link} title={link[1]} target="_blank" rel="noreferrer">
                                     <img className="download_icon" src="https://storage.unctad.org/2026-cyberlaw_tracker/assets/img/document.png" alt="Download document" />
                                   </a>
@@ -253,19 +253,5 @@ function ChartTable({ country = null, type, values }) {
     </div>
   );
 }
-
-ChartTable.propTypes = {
-  country: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
-      })
-    ),
-    PropTypes.oneOf([null])
-  ]),
-  type: PropTypes.string.isRequired,
-  values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object, PropTypes.array])).isRequired
-};
 
 export default ChartTable;

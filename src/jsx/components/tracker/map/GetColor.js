@@ -41,10 +41,9 @@ function getColorFromValue(value, region_data, type) {
 }
 
 // Define a color mapping function based on value **and code**
-const getColor = (region_data, code, data, type, china_areas) => {
-  const value = region_data ? region_data.value : null;
+const getColor = (region, data, china_areas, type) => {
   // First check if this code is special
-  if (code === 'C00002') {
+  if (region.code === 'C00002') {
     // AksaiChin
     const kashmirData = data.find(item => item.code === 'C00007'); // Find kashmir in data
     const kashmirValue = kashmirData ? kashmirData.value : null; // Get kashmir's value, default to null
@@ -63,26 +62,25 @@ const getColor = (region_data, code, data, type, china_areas) => {
       }
     };
   }
-  if (code === 'C00003') {
+  if (region.code === 'C00003') {
     // ArunachalPradesh = India
     const indiaData = data.find(item => item.code === '356');
     const indiaValue = indiaData ? indiaData.value : null;
     return getColorFromValue(indiaValue, indiaData, type);
   }
-  if (code === '412') {
+  if (region.code === '412') {
     // Kosovo = Serbia
     const serbiaData = data.find(item => item.code === '688');
     const serbiaValue = serbiaData ? serbiaData.value : null;
     return getColorFromValue(serbiaValue, serbiaData, type);
   }
-  if (china_areas.includes(code)) {
+  if (china_areas.includes(region.code)) {
     // Macao, HongKong, China, Taiwan = China
     const chinaData = data.find(item => item.code === '156');
     const chinaValue = chinaData ? chinaData.value : null;
     return getColorFromValue(chinaValue, chinaData, type);
   }
-
-  return getColorFromValue(value, region_data, type);
+  return getColorFromValue(region.value, region, type);
 };
 
 export default getColor;
