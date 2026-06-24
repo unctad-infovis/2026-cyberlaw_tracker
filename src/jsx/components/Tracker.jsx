@@ -6,8 +6,8 @@ import { useIsVisible } from 'react-is-visible';
 import Select from 'react-select';
 
 // Load helpers.
-import LoadFile from './../helpers/LoadFile.js';
 import CSVtoJSON from './../helpers/CsvToJson.js';
+import LoadFile from './../helpers/LoadFile.js';
 import ChartMap from './tracker/ChartMap.jsx';
 import ChartTable from './tracker/ChartTable.jsx';
 

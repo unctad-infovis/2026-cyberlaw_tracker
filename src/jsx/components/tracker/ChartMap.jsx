@@ -21,7 +21,7 @@ import getRegionData from './map/getRegionData.js';
 import processTopoObject from './map/ProcessTopoObject.js';
 import processTopoObjectPolygons from './map/ProcessTopoObjectPolygons.js';
 
-function ChartMap({ country = null, hover_country = null, setCountry, setHoverCountry, table_collapsed, type, values }) {
+function ChartMap({ hover_country = null, table_collapsed, type, values }) {
   const chartMapRef = useRef(null);
   const chinaAreas = useMemo(() => ['156', '158', '344', '446'], []);
 
