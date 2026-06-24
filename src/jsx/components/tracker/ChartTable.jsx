@@ -235,7 +235,7 @@ function ChartTable({ country = null, type, values }) {
                               <span className="icon">{generateIcon(el[law])}</span> <span className="label">{law}</span>{' '}
                               {values.document_links[el.code][law] &&
                                 values.document_links[el.code][law].map(link => (
-                                  <a href={link[0]} key={link} title={link[1]} target="_blank" rel="noreferrer">
+                                  <a href={link[0]} key={link} title={link[1]} target={link[0] === '#' ? '' : '_blank'} rel="noreferrer">
                                     <img className="download_icon" src="https://storage.unctad.org/2026-cyberlaw_tracker/assets/img/document.png" alt="Download document" />
                                   </a>
                                 ))}

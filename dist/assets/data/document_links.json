@@ -337,10 +337,7 @@
     "Electronic Transactions": [
       ["https://www.nationalassembly.gov.bz/wp-content/uploads/2021/07/Electronic-Transactions-Bill-2021-updated.pdf","Electronic Transactions Act, 2021"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["https://www.nationalassembly.gov.bz/wp-content/uploads/2021/12/Act-No-45-of-2021-Data-Protection-Act.pdf","Data Protection Act 2021"]
     ],
@@ -374,10 +371,7 @@
     "Electronic Transactions": [
       ["https://oag.gov.bt/wp-content/uploads/2010/05/Bhutan-Information-Communications-and-Media-Act-2006English.pdf","Bhutan Information Communications and Media Act 2018 (in Dzongkha)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["https://www.dit.gov.bt/information-communications-and-media-act-bhutan-2018","Bhutan Information, Communications and Media Act 2018 (in English and Dzongkha)"]
     ],
@@ -407,10 +401,7 @@
     "Electronic Transactions": [
       ["https://advokat-prnjavorac.com/zakoni/Zakon_o_elektronskom_potpisu_BiH.pdf","Službeni Glasnik BiH 91/06 (Law of 14/11/2006) (in Bosnian)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["#","Law on Personal Data Protection (the Draft Law)"],
       ["https://www.refworld.org/pdfid/4d2ee2b72.pdf","Law on the Protection of Personal Data No. 49/06 ('the Law')"]
@@ -601,10 +592,7 @@
     "Electronic Transactions": [
       ["https://www.arcep.td/lois.html","Law No. 08 / PR / 2015 of 10 February 2015 concerning electronic transactions"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["https://arcep.td/sites/default/files/Loi-N%C2%B007-PR-2015.pdf","Law 007/PR/2015 on the Protection of Personal Data (in French and Arabic)"]
     ],
@@ -1616,10 +1604,7 @@
     "Electronic Transactions": [
       ["https://www.wto.org/english/thewto_e/acc_e/lbr_e/WTACCLBR15_LEG_18.pdf","Electronic Transactions Law, 2002 (in English)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": [
       ["https://mopt.gov.lr/wp-content/uploads/2022/06/Final-Version-Cyber-Crime-Act-MOPT.pdf","Draft Cybercrime Act, 2021"]
@@ -1803,10 +1788,7 @@
       ["https://www.msgg.gov.mr/sites/default/files/2020-11/J.O.%201417F%20DU%2030.07.2018.pdf","Law No. 022-2018 relating to electronic transactions"],
       ["https://www.droit-afrique.com/uploads/Mauritanie-Loi-2021-14-services-moyens-paiement-electronique.pdf","loi 2021-014 relative aux services et moyens de paiement électronique"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["http://tic.gov.mr/IMG/pdf/imp1fr-2.pdf","Loi 2017-020 sur la protection des données à caractère personnel (in French)"]
     ],
@@ -2486,10 +2468,7 @@
       ["https://www.consigliograndeegenerale.sm/on-line/home/archivio-leggi-decreti-e-regolamenti/scheda17015833.html","Legge 20 luglio 2005, n. 115 sul documento informatico e la firma elettronica (in Italian)"],
       ["https://admin.abc.sm/cms/media/www.anis.sm/law%2058-2013%20e-commerce.pdf","Legge sull'uso delle comunicazioni elettroniche e dell'e-commerce"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["https://www.dataguidance.com/sites/default/files/law_21_december_2018_no._171_en.pdf","Law No. 171 of 21 December 2018, Protection of Natural Persons with Regard to the Processing of Personal Data ('the Law')"]
     ],
@@ -2807,10 +2786,7 @@
       ["http://cis-legislation.com/document.fwx?rgn=18412","The Law of the Republic of Tajikistan about the Electronic Digital Signature (2007, amended in 2011)"],
       ["http://cis-legislation.com/document.fwx?rgn=2183","The Law of the Republic of Tajikistan about<br>Electronic Documents (2002, amended in 2014)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": [
       ["https://cis-legislation.com/document.fwx?rgn=108952","Law of the Republic of Tajikistan No 1537 about Personal Data Protection, 2018"]
     ],
@@ -2864,7 +2840,6 @@
       ["https://www.droit-afrique.com/uploads/Togo-Loi-2017-07-transactions-electroniques.pdf","Loi sur les transactions électroniques No. 2017-07 (in French) (Revised June 2023)"]
     ],
     "Consumer Protection": [
-      "No Data",
       ["http://www.droit-afrique.com/upload/doc/togo/Togo-Loi-2012-18-communications-electroniques.pdf","la loi n° 2012-018 du 17 décembre 2012 sur les communications électroniques."]
     ],
     "Privacy and Data Protection": [
@@ -2881,7 +2856,6 @@
       ["http://rgd.legalaffairs.gov.tt/Laws2/Alphabetical_List/lawspdfs/22.05.pdf","Electronic Transactions Act, No. 6 of 2011, Chap 22:05 (in English)"]
     ],
     "Consumer Protection": [
-      "No Data",
       ["#"," Draft Consumer Protection Bill 2020"],
       ["https://tradeind.gov.tt/wp-content/uploads/2016/02/Consumer-Protection-and-Safety-Act-82.34.pdf","Consumer Protection and Safety Act, 1985"]
     ],
@@ -3121,10 +3095,7 @@
     "Electronic Transactions": [
       ["https://www.vfsc.vu/wp-content/uploads/2015/12/Electronic-Transactions-Act-No.-24-of-2000.pdf","Electronic Transactions Act No 24 of 2000 (in English)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": [
       ["https://ogcio.gov.vu/images/Docs/legislation/Cybercrime_Act_n_of_2021.pdf","Vanuatu Cybercrime Act No. 22 of 2021"]
@@ -3136,10 +3107,7 @@
     "Electronic Transactions": [
       ["https://www.oas.org/juridico/spanish/mesicic3_ven_anexo19.pdf","Ley de Mensajes de Datos y Firma Electrónica del año 2001 (in Spanish)"]
     ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": [
       ["http://www.oas.org/juridico/spanish/mesicic3_ven_anexo18.pdf","Ley Especial Contra los Delitos Informáticos - Gaceta Oficial N° 37.313 del 30 de octubre de 2001 (in Spanish)"]
@@ -3270,10 +3238,7 @@
   "140": {
     "countryName": "Central African Republic",
     "Electronic Transactions": false,
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": false,
     "Indirect Taxation": false
@@ -3292,42 +3257,24 @@
     "Consumer Protection": [
       ["https://elaw.klri.re.kr/eng_mobile/viewer.do?hseq=25650&amp;type=new&amp;key","Act on Consumer Protection in Electronic Commerce"]
     ],
-    "Privacy and Data Protection": [
-      "No Data",
-      ""
-    ],
+    "Privacy and Data Protection": false,
     "Cybercrime": false,
     "Indirect Taxation": false
   },
   "232": {
     "countryName": "Eritrea",
     "Electronic Transactions": false,
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": false,
     "Indirect Taxation": false
   },
   "336": {
     "countryName": "Holy See",
-    "Electronic Transactions": [
-      "No Data",
-      ""
-    ],
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
-    "Privacy and Data Protection": [
-      "No Data",
-      ""
-    ],
-    "Cybercrime": [
-      "No Data",
-      ""
-    ],
+    "Electronic Transactions": false,
+    "Consumer Protection": false,
+    "Privacy and Data Protection": false,
+    "Cybercrime": false,
     "Indirect Taxation": false
   },
   "417": {
@@ -3345,10 +3292,7 @@
   "584": {
     "countryName": "Marshall Islands",
     "Electronic Transactions": false,
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": false,
     "Indirect Taxation": false
@@ -3400,10 +3344,7 @@
   "776": {
     "countryName": "Tonga",
     "Electronic Transactions": false,
-    "Consumer Protection": [
-      "No Data",
-      ""
-    ],
+    "Consumer Protection": false,
     "Privacy and Data Protection": false,
     "Cybercrime": [
       ["https://ago.gov.to/cms/images/LEGISLATION/BILLS/2019/2019-0025/ComputerCrimesBill2019.pdf","Computer Crimes Act 2019"]
