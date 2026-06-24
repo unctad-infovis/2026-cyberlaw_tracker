@@ -426,14 +426,13 @@
       ["https://www.bocra.org.bw/sites/default/files/documents/Electronic-Communications-and-Transactions-Act-2014.pdf","Electronic communication and transactions Act No. 14/2014 (in English)"]
     ],
     "Consumer Protection": [
-      "No Data",
-      ""
+      ["https://www.bocra.org.bw/sites/default/files/documents/05%20Act%2020%EF%80%A204%EF%80%A22018%20CONSUMER%20PROTECTION.pdf", ""]
     ],
     "Privacy and Data Protection": [
-      ["https://www.bocra.org.bw/sites/default/files/documents/DataProtectionAct.pdf","Bill - Data protection Law 2018 (in English)"]
+      ["https://www.dataguidance.com/sites/default/files/data_protection_bill_2024.pdf","Bill - Data protection Law 2024 (in English)"]
     ],
     "Cybercrime": [
-      ["https://sherloc.unodc.org/cld/v3/sherloc/legdb/search.html?lng=en#?c=%7B%22filters%22:%5B%7B%22fieldName%22:%22en%23__el.legislation.crimeTypes_s%22,%22value%22:%22Cybercrime%22%7D%5D,%22sortings%22:%22%22,%22match%22:%22botswana%22,%22termMatch%22:%22botswana%22%7D","Chapter 08:06 Cybercrime and Computer Related Crimes (no 22) of 2007 (in English)"]
+      ["https://www.bocra.org.bw/sites/default/files/documents/18%20Act%2029-06-2018%20Cybercrime%20and%20Computer%20Related%20Crimes.pdf","Chapter 08:06 Cybercrime and Computer Related Crimes (no 22) of 2007 (in English)"]
     ],
     "Indirect Taxation": false
   },

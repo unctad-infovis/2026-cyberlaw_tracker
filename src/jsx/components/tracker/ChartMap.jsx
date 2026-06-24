@@ -149,6 +149,9 @@ function ChartMap({ country = null, hover_country = null, setCountry, setHoverCo
         legend: {
           enabled: false
         },
+        mapView: {
+          maxZoom: 4
+        },
         mapNavigation: {
           buttonOptions: {
             x: 0,

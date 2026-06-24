@@ -34,5 +34,8 @@
     "react-is-visible": "^1.2.0",
     "react-select": "^5.10.2",
     "uuid4": "^2.0.3"
+  },
+  "allowScripts": {
+    "fsevents@2.3.3": true
   }
 }
