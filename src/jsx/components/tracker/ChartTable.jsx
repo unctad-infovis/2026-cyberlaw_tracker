@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-
 // Load helpers.
-import roundNr from './../../helpers/RoundNr.js';
+import roundNr from '@unctad-infovis/general-tools/helpers/RoundNr.js';
+import React, { useEffect, useRef, useState } from 'react';
 import generateIcon from './helpers/GenerateIcon.jsx';
 
 function ChartTable({ country = null, type, values }) {

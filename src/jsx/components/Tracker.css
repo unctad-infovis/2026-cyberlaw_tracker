@@ -160,21 +160,13 @@
                     line-height: 16px;
                   }
                 }
-                .basic-multi-select {
+                .country_select {
+                  --select-control-height: 28px;
+                  --select-min-width: 290px;
+                  --select-z-index: 5;
                   font-size: 15px;
                   max-width: 290px;
-                  min-width: 290px;
                   width: 100%;
-                  z-index: 5;
-                  .select__control {
-                    box-shadow: none;
-                    svg {
-                      cursor: pointer;
-                    }
-                    &:hover {
-                      border-color: hsl(0, 0%, 80%);
-                    }
-                  }
                 }
               }
             }
@@ -278,6 +270,16 @@
               /*transform: translateX(-200px);*/
               /*transition: transform 0.3s ease;*/
               width: calc(100% - 400px);
+              .highcharts-button {
+                outline: none;
+              }
+              .highcharts-label-box,
+              .highcharts-button-box {
+                fill: #fff;
+              }
+              .highcharts-button-symbol {
+                stroke: #333;
+              }
               .map_tooltip {
                 h5 {
                   margin: 0 0 5px 0;

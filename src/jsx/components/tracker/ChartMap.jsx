@@ -1,6 +1,5 @@
 import Highcharts from 'highcharts';
 
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 // https://www.highcharts.com/
@@ -14,12 +13,13 @@ import { renderToString } from 'react-dom/server';
 
 // Load helpers.
 import generateIcon from './helpers/GenerateIcon.jsx';
-import createMaplineSeries from './map/CreateMaplineSeries.js';
-import getColor from './map/GetColor.js';
-import getValue from './map/GetValue.js';
-import getRegionData from './map/getRegionData.js';
-import processTopoObject from './map/ProcessTopoObject.js';
-import processTopoObjectPolygons from './map/ProcessTopoObjectPolygons.js';
+import createMaplineSeries from '@unctad-infovis/map-tools/CreateMaplineSeries.js';
+import getColor from '@unctad-infovis/map-tools/GetColor.js';
+import getValue from '@unctad-infovis/map-tools/GetValue.js';
+import processTopoObject from '@unctad-infovis/map-tools/ProcessTopoObject.js';
+import processTopoObjectPolygons from '@unctad-infovis/map-tools/ProcessTopoObjectPolygons.js';
+import getColorFromValue from './map/GetColorFromValue.js';
+import getRegionData from './map/GetRegionData.js';
 
 function ChartMap({ hover_country = null, table_collapsed, type, values }) {
   const chartMapRef = useRef(null);
@@ -56,7 +56,7 @@ function ChartMap({ hover_country = null, table_collapsed, type, values }) {
       series.points.forEach(point => {
         if (point.region_data) {
           point.update(
-            { color: getColor(point.region_data, values.data, chinaAreas, type) },
+            { color: getColor(point.region_data, values.data, chinaAreas, (value, region_data) => getColorFromValue(value, region_data, type)) },
             false // do not redraw yet
           );
         }
@@ -204,7 +204,7 @@ function ChartMap({ hover_country = null, table_collapsed, type, values }) {
               return {
                 borderWidth: 0,
                 code: region.properties.code,
-                color: getColor(region.properties, data, chinaAreas, type),
+                color: getColor(region.properties, data, chinaAreas, (value, region_data) => getColorFromValue(value, region_data, type)),
                 events: {
                   click() {
                     return true;
@@ -332,29 +332,3 @@ function ChartMap({ hover_country = null, table_collapsed, type, values }) {
 }
 
 export default ChartMap;
-
-ChartMap.propTypes = {
-  country: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
-      })
-    ),
-    PropTypes.oneOf([null])
-  ]),
-  hover_country: PropTypes.oneOfType([
-    PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
-      })
-    ),
-    PropTypes.oneOf([null])
-  ]),
-  setCountry: PropTypes.func.isRequired,
-  setHoverCountry: PropTypes.func.isRequired,
-  table_collapsed: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  values: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.object])).isRequired
-};

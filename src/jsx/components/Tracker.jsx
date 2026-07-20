@@ -1,21 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import CSVtoJSON from '@unctad-infovis/general-tools/helpers/CsvToJson.js';
+import LoadFile from '@unctad-infovis/general-tools/helpers/LoadFile.js';
+import Select from '@unctad-infovis/general-tools/components/Select.jsx';
+import useIsVisible from '@unctad-infovis/general-tools/helpers/UseIsVisible.js';
 
-// https://www.npmjs.com/package/react-is-visible
-import { useIsVisible } from 'react-is-visible';
-
-import Select from 'react-select';
+import { useCallback, useEffect, useState } from 'react';
 
 // Load helpers.
-import CSVtoJSON from './../helpers/CsvToJson.js';
-import LoadFile from './../helpers/LoadFile.js';
 import ChartMap from './tracker/ChartMap.jsx';
 import ChartTable from './tracker/ChartTable.jsx';
 
 import './Tracker.css';
 
 function App({ meta }) {
-  const appRef = useRef(null);
-  const isVisibleApp = useIsVisible(appRef);
+  const [setAppNode, isVisibleApp, appNode] = useIsVisible(0.1);
 
   const [data, setData] = useState(false);
   const [options, setOptions] = useState(false);
@@ -27,12 +24,12 @@ function App({ meta }) {
   const [tableState, setTableState] = useState('expanded');
 
   const checkWidth = useCallback(() => {
-    if (appRef.current.offsetWidth < 900) {
+    if (appNode?.offsetWidth < 900) {
       setTimeout(() => {
         setTableState('collapsed');
       }, 1500);
     }
-  }, []);
+  }, [appNode]);
 
   useEffect(() => {
     if (isVisibleApp === true) {
@@ -165,69 +162,32 @@ function App({ meta }) {
   }, [calculateLegislationPercentages, fetchExternalData]);
 
   const changeType = element => {
-    for (const el of appRef.current.querySelectorAll('.selection_container.type_selection button')) {
+    for (const el of appNode.querySelectorAll('.selection_container.type_selection button')) {
       el.classList.remove('active');
     }
-    appRef.current.querySelector('.description').innerHTML = element.dataset.desc;
+    appNode.querySelector('.description').innerHTML = element.dataset.desc;
     element.classList.add('active');
     setType(element.value);
   };
 
   useEffect(() => {
+    if (!appNode) return;
     const getHashtag = () => decodeURIComponent(window.location.hash.slice(1));
     const legislations = ['Electronic Transactions', 'Privacy and Data Protection', 'Cybercrime', 'Consumer Protection', 'Indirect Taxation'];
     const hashtag_idx = legislations.indexOf(getHashtag());
     if (hashtag_idx > -1) {
-      appRef.current.querySelector(`.button_${hashtag_idx + 1}`).click();
+      appNode.querySelector(`.button_${hashtag_idx + 1}`).click();
       window.location.hash = '';
     }
-  }, []);
+  }, [appNode]);
 
   const changeCountry = option => {
-    setCountry(option && (!Array.isArray(option) || option.length) ? option : null);
-    setHoverCountry(option && (!Array.isArray(option) || option.length) ? option : null);
+    setCountry(option.length ? option : null);
+    setHoverCountry(option.length ? option : null);
   };
 
-  const customStyles = {
-    // outer control (border, background)
-    control: (provided, state) => ({
-      ...provided,
-      boxShadow: state.isFocused ? provided.boxShadow : null,
-      height: 28,
-      minHeight: 28 // control height
-    }),
-    // area that contains value & input
-    valueContainer: provided => ({
-      ...provided,
-      height: 28,
-      padding: '0 8px'
-    }),
-    // input itself (text cursor area)
-    input: provided => ({
-      ...provided,
-      margin: 0,
-      padding: 0
-    }),
-    // the selected value text (single)
-    singleValue: provided => ({
-      ...provided,
-      marginTop: 17,
-      transform: 'translateY(-50%)'
-    }),
-    // indicators on the right (chevron, clear)
-    indicatorsContainer: provided => ({
-      ...provided,
-      height: 28
-    }),
-    // controls the dropdown option height/padding
-    option: provided => ({
-      ...provided,
-      minHeight: 38,
-      padding: '10px 12px'
-    })
-  };
   return (
-    <figure className="tracker_container" ref={appRef}>
+    <figure className="tracker_container" ref={setAppNode}>
       <div className="title_container">
         <div className="text_container">
           <div className="main_title_container">
@@ -322,21 +282,14 @@ function App({ meta }) {
                 <div className="selector_container">
                   {options && (
                     <Select
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                      defaultValue=""
-                      isClearable
-                      isDisabled={false}
-                      isLoading={false}
-                      isMulti
-                      isOptionDisabled={option => option.isdisabled}
-                      isRtl={false}
-                      isSearchable
+                      ariaLabel="Select economy or region"
+                      className="country_select"
+                      clearable
+                      multiple
                       name="country"
                       onChange={selectedOption => changeCountry(selectedOption)}
                       options={options}
-                      placeholder="Select economy "
-                      styles={customStyles}
+                      placeholder="Select economy"
                       value={country}
                     />
                   )}
