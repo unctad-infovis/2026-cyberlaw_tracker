@@ -282,19 +282,19 @@
               }
               .map_tooltip {
                 h5 {
-                  margin: 0 0 5px 0;
-                  font-weight: 600;
                   font-size: 16px;
+                  font-weight: 600;
+                  margin: 0 0 5px 0;
                 }
                 .main {
-                  margin-bottom: 5px;
                   font-weight: 600;
+                  margin-bottom: 5px;
                 }
                 span.icon span {
-                  line-height: 18px;
-                  vertical-align: middle;
                   display: inline-block;
                   height: 14px;
+                  line-height: 18px;
+                  vertical-align: middle;
                   width: 14px;
                   &.no_data {
                     background-color: #aea29a;
