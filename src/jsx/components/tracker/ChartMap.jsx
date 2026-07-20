@@ -1,7 +1,10 @@
+import createMaplineSeries from '@unctad-infovis/map-tools/CreateMaplineSeries.js';
+import getColor from '@unctad-infovis/map-tools/GetColor.js';
+import getValue from '@unctad-infovis/map-tools/GetValue.js';
+import processTopoObject from '@unctad-infovis/map-tools/ProcessTopoObject.js';
+import processTopoObjectPolygons from '@unctad-infovis/map-tools/ProcessTopoObjectPolygons.js';
+
 import Highcharts from 'highcharts';
-
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-
 // https://www.highcharts.com/
 import 'highcharts/modules/accessibility';
 import 'highcharts/modules/exporting';
@@ -9,15 +12,11 @@ import 'highcharts/modules/export-data';
 import 'highcharts/modules/map';
 import 'highcharts/modules/pattern-fill';
 
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { renderToString } from 'react-dom/server';
 
 // Load helpers.
 import generateIcon from './helpers/GenerateIcon.jsx';
-import createMaplineSeries from '@unctad-infovis/map-tools/CreateMaplineSeries.js';
-import getColor from '@unctad-infovis/map-tools/GetColor.js';
-import getValue from '@unctad-infovis/map-tools/GetValue.js';
-import processTopoObject from '@unctad-infovis/map-tools/ProcessTopoObject.js';
-import processTopoObjectPolygons from '@unctad-infovis/map-tools/ProcessTopoObjectPolygons.js';
 import getColorFromValue from './map/GetColorFromValue.js';
 import getRegionData from './map/GetRegionData.js';
 

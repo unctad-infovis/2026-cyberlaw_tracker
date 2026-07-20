@@ -1,6 +1,6 @@
+import Select from '@unctad-infovis/general-tools/components/Select.jsx';
 import CSVtoJSON from '@unctad-infovis/general-tools/helpers/CsvToJson.js';
 import LoadFile from '@unctad-infovis/general-tools/helpers/LoadFile.js';
-import Select from '@unctad-infovis/general-tools/components/Select.jsx';
 import useIsVisible from '@unctad-infovis/general-tools/helpers/UseIsVisible.js';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -279,21 +279,7 @@ function App({ meta }) {
                 </h4>
               </div>
               <div className="selection_container">
-                <div className="selector_container">
-                  {options && (
-                    <Select
-                      ariaLabel="Select economy or region"
-                      className="country_select"
-                      clearable
-                      multiple
-                      name="country"
-                      onChange={selectedOption => changeCountry(selectedOption)}
-                      options={options}
-                      placeholder="Select economy"
-                      value={country}
-                    />
-                  )}
-                </div>
+                <div className="selector_container">{options && <Select ariaLabel="Select economy or region" className="country_select" clearable multiple name="country" onChange={selectedOption => changeCountry(selectedOption)} options={options} placeholder="Select economy" value={country} />}</div>
               </div>
             </div>
           </div>
