@@ -270,16 +270,6 @@
               /*transform: translateX(-200px);*/
               /*transition: transform 0.3s ease;*/
               width: calc(100% - 400px);
-              .highcharts-button {
-                outline: none;
-              }
-              .highcharts-label-box,
-              .highcharts-button-box {
-                fill: #fff;
-              }
-              .highcharts-button-symbol {
-                stroke: #333;
-              }
               .map_tooltip {
                 h5 {
                   font-size: 16px;
