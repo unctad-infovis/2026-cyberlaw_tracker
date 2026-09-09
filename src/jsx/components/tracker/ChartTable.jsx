@@ -3,6 +3,9 @@ import roundNr from '@unctad-infovis/general-tools/helpers/RoundNr.js';
 import React, { useEffect, useRef, useState } from 'react';
 import generateIcon from './helpers/GenerateIcon.jsx';
 
+// Geographic regions first (alphabetical), then analytical country groupings (alphabetical).
+const REGIONS = ['Africa', 'Asia and Oceania', 'Latin America and Caribbean', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Least developed countries', 'Small island developing states'];
+
 function ChartTable({ country = null, type, values }) {
   const chartTableRef = useRef(null);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -99,7 +102,7 @@ function ChartTable({ country = null, type, values }) {
             </thead>
             <tbody>
               {values &&
-                ['World', 'Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].map(region => (
+                ['World', ...REGIONS].map(region => (
                   <tr key={region}>
                     <td>{region}</td>
                     <td>
@@ -120,7 +123,7 @@ function ChartTable({ country = null, type, values }) {
       </table>
       <table style={{ width: `${containerSize.width}px` }} cellPadding="0" cellSpacing="0">
         <thead>
-          {['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'].filter(region => (country ? country.some(c => c.value === region) : true)).length > 0 && (
+          {REGIONS.filter(region => (country ? country.some(c => c.value === region) : true)).length > 0 && (
             <tr>
               <th className="name" colSpan="2">
                 Region
@@ -133,75 +136,71 @@ function ChartTable({ country = null, type, values }) {
         </thead>
         <tbody>
           {type === 'Overview' &&
-            ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states']
-              .filter(region => (country ? country.some(c => c.value === region) : true))
-              .map(region => {
-                const rowId = region;
-                const isExpanded = !!expandedRows[rowId];
-                return (
-                  <React.Fragment key={rowId}>
-                    <tr className={isExpanded || country?.some(c => c.value === region) ? 'expanded' : ''} onClick={() => toggleRow(rowId)} style={{ cursor: 'pointer' }}>
-                      <td className="name" colSpan="2">
-                        {region}
-                      </td>
-                      <td className="info" colSpan="1">
-                        {isExpanded || country?.some(c => c.value === region) ? '▼ Hide' : '▶ Show'}{' '}
+            REGIONS.filter(region => (country ? country.some(c => c.value === region) : true)).map(region => {
+              const rowId = region;
+              const isExpanded = !!expandedRows[rowId];
+              return (
+                <React.Fragment key={rowId}>
+                  <tr className={isExpanded || country?.some(c => c.value === region) ? 'expanded' : ''} onClick={() => toggleRow(rowId)} style={{ cursor: 'pointer' }}>
+                    <td className="name" colSpan="2">
+                      {region}
+                    </td>
+                    <td className="info" colSpan="1">
+                      {isExpanded || country?.some(c => c.value === region) ? '▼ Hide' : '▶ Show'}{' '}
+                    </td>
+                  </tr>
+                  {/* Hidden details row */}
+                  {(isExpanded || country?.some(c => c.value === region)) && (
+                    <tr className="subrow">
+                      <td colSpan="3">
+                        <div className="subrow-content">
+                          {['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'].map(law_name => (
+                            <div key={law_name}>
+                              <span className="label">{law_name}</span>
+                              {': '}
+                              <span className="label">{roundNr({ x: values.legislationStats[law_name].Legislation[region], d: 0 })}%</span>
+                            </div>
+                          ))}
+                        </div>
                       </td>
                     </tr>
-                    {/* Hidden details row */}
-                    {(isExpanded || country?.some(c => c.value === region)) && (
-                      <tr className="subrow">
-                        <td colSpan="3">
-                          <div className="subrow-content">
-                            {['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'].map(law_name => (
-                              <div key={law_name}>
-                                <span className="label">{law_name}</span>
-                                {': '}
-                                <span className="label">{roundNr({ x: values.legislationStats[law_name].Legislation[region], d: 0 })}%</span>
-                              </div>
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                  )}
+                </React.Fragment>
+              );
+            })}
           {type !== 'Overview' &&
-            ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states']
-              .filter(region => (country ? country.some(c => c.value === region) : true))
-              .map(region => {
-                const rowId = region;
-                const isExpanded = !!expandedRows[rowId];
-                return (
-                  <React.Fragment key={rowId}>
-                    <tr className={isExpanded || country?.some(c => c.value === region) ? 'expanded' : ''} onClick={() => toggleRow(rowId)} style={{ cursor: 'pointer' }}>
-                      <td className="name" colSpan="2">
-                        {region}
-                      </td>
-                      <td className="info" colSpan="1">
-                        {isExpanded || country?.some(c => c.value === region) ? '▼ Hide' : '▶ Show'}{' '}
+            REGIONS.filter(region => (country ? country.some(c => c.value === region) : true)).map(region => {
+              const rowId = region;
+              const isExpanded = !!expandedRows[rowId];
+              return (
+                <React.Fragment key={rowId}>
+                  <tr className={isExpanded || country?.some(c => c.value === region) ? 'expanded' : ''} onClick={() => toggleRow(rowId)} style={{ cursor: 'pointer' }}>
+                    <td className="name" colSpan="2">
+                      {region}
+                    </td>
+                    <td className="info" colSpan="1">
+                      {isExpanded || country?.some(c => c.value === region) ? '▼ Hide' : '▶ Show'}{' '}
+                    </td>
+                  </tr>
+                  {/* Hidden details row */}
+                  {(isExpanded || country?.some(c => c.value === region)) && (
+                    <tr className="subrow">
+                      <td colSpan="3">
+                        <div className="subrow-content">
+                          {['Legislation', 'Draft Legislation', 'No Legislation', 'No Data'].map(answer => (
+                            <div key={answer}>
+                              <span className="label">{answer}</span>
+                              {': '}
+                              <span className="label">{roundNr({ x: values.legislationStats[type][answer][region], d: 0 })}%</span>
+                            </div>
+                          ))}
+                        </div>
                       </td>
                     </tr>
-                    {/* Hidden details row */}
-                    {(isExpanded || country?.some(c => c.value === region)) && (
-                      <tr className="subrow">
-                        <td colSpan="3">
-                          <div className="subrow-content">
-                            {['Legislation', 'Draft Legislation', 'No Legislation', 'No Data'].map(answer => (
-                              <div key={answer}>
-                                <span className="label">{answer}</span>
-                                {': '}
-                                <span className="label">{roundNr(values.legislationStats[type][answer][region], 0)}%</span>
-                              </div>
-                            ))}
-                          </div>
-                        </td>
-                      </tr>
-                    )}
-                  </React.Fragment>
-                );
-              })}
+                  )}
+                </React.Fragment>
+              );
+            })}
         </tbody>
         <thead>
           {tableData.length > 0 && (

@@ -50,7 +50,7 @@ function App({ meta }) {
   const calculateLegislationPercentages = useCallback(country_data => {
     const legislations = ['Consumer Protection', 'Cybercrime', 'Electronic Transactions', 'Indirect Taxation', 'Privacy and Data Protection'];
 
-    const groups = ['Africa', 'Asia and Oceania', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Latin America and Caribbean', 'Least developed countries', 'Small island developing states'];
+    const groups = ['Africa', 'Asia and Oceania', 'Latin America and Caribbean', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Least developed countries', 'Small island developing states'];
 
     const statuses = ['Legislation', 'Draft Legislation', 'No Legislation', 'No Data'];
 
@@ -133,10 +133,10 @@ function App({ meta }) {
             { value: 'World', label: 'World' },
             { value: 'Africa', label: 'Africa' },
             { value: 'Asia and Oceania', label: 'Asia and Oceania' },
+            { value: 'Latin America and Caribbean', label: 'Latin America and Caribbean' },
             { value: 'Developed countries', label: 'Developed countries' },
             { value: 'Developing countries', label: 'Developing countries' },
             { value: 'Landlocked developing countries', label: 'Landlocked developing countries (LLDCs)' },
-            { value: 'Latin America and Caribbean', label: 'Latin America and Caribbean' },
             { value: 'Least developed countries', label: 'Least developed countries (LDCs)' },
             { value: 'Small island developing states', label: 'Small island developing states (SIDS)' }
           ]
