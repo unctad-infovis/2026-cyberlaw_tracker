@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import generateIcon from './helpers/GenerateIcon.jsx';
 
 // Geographic regions first (alphabetical), then analytical country groupings (alphabetical).
-const REGIONS = ['Africa', 'Asia and Oceania', 'Latin America and Caribbean', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Least developed countries', 'Small island developing states'];
+const REGIONS = ['Africa', 'Asia and Oceania', 'Europe', 'Latin America and Caribbean', 'Northern America', 'Developed countries', 'Developing countries', 'Landlocked developing countries', 'Least developed countries', 'Small island developing states'];
 
 function ChartTable({ country = null, type, values }) {
   const chartTableRef = useRef(null);
