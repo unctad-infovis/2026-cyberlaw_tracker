@@ -5,7 +5,9 @@
   "description": "",
   "main": "index.jsx",
   "scripts": {
+    "prebuild": "npm run generate-cyberlaw-data",
     "build": "vite build",
+    "generate-cyberlaw-data": "python3 scripts/generate-cyberlaw-data-js.py",
     "postbuild": "node -e \"const fs=require('fs');['dist/index.html'].forEach(p=>{const h=fs.readFileSync(p,'utf8');fs.writeFileSync(p,h.replace(/href=\\\"\\//g,'href=\\\"./').replace(/src=\\\"\\//g,'src=\\\"./'));});\"",
     "start": "vite --open",
     "start_public": "vite --open --host",
