@@ -78,6 +78,12 @@ def js_str(s: str) -> str:
     return "'" + s.replace("\\", "\\\\").replace("'", "\\'") + "'"
 
 
+def dump_countries(countries: dict) -> str:
+    # Country-code keys are double-quoted (matching the format et4a already
+    # consumes); every other string in this file uses single quotes.
+    return "{" + ",".join(f'"{iso2}":{dump(codes)}' for iso2, codes in countries.items()) + "}"
+
+
 def dump(obj) -> str:
     if isinstance(obj, dict):
         return "{" + ",".join(f"{js_str(k)}:{dump(v)}" for k, v in obj.items()) + "}"
@@ -120,7 +126,7 @@ def main() -> int:
         })
 
     out = (
-        f"var currentData2 = {{ creditText: {js_str(credit_text)}, countries: {dump(countries)} }};"
+        f"var currentData2 = {{ creditText: {js_str(credit_text)}, countries: {dump_countries(countries)} }};"
         f"let statistics = {dump(statistics)};\n"
     )
     OUT_PATH.write_text(out, encoding="utf-8")
